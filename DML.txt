@@ -1,0 +1,701 @@
+******************************************************************************
+NAME 		  : S. DEIVANAYAKI
+ROLLNO 	  : 21BCS003
+EXERCISE NO   : 02
+EXERCISE NAME : IMPLEMENTATION OF DATA MANIPULATION LANGUAGE (DML) COMMANDS
+******************************************************************************
+
+
+I) INSERT COMMAND:
+
+
+1) INSERT THE VALUES INTO THE TABLE STUDENT
+
+=========
+STUDENT
+=========
+
+
+SQL> INSERT INTO STUDENT VALUES(103,'JENY','ddd@gmail.com','F',7,'WEST STREET','AMBAI','TIRUNELVELI','TAMILNADU','ddd03');
+
+SQL> INSERT INTO STUDENT VALUES(101,'RAM','lll.me@gmail.com','M',65,'NORTH STREET','PUTHUR','TUTICORIN','TAMILNADU','sss15');
+
+SQL> INSERT INTO STUDENT VALUES(104,'MALA','bbb@gmail.com','F',15,'SOUTH STREET','SIVAKASI','VIRUDHUNAGAR','TAMILNADU','db13');
+
+SQL> INSERT INTO STUDENT VALUES(102,'RAJU','aaa@gmail.com','M',34,'EAST STREET','BANGALORE','BANGALORE','KARNATAKA','abcde1');
+
+
+
+
+SQL> SELECT * FROM STUDENT;
+
+      S_ID S_NAME               S_MAILID             S     DOORNO STNAME               CITY                 DISTRICT             STATE             PASSWORD
+---------- -------------------- -------------------- - ---------- -------------------- -------------------- -------------------- ----------------- --------
+       103 JENY                 ddd@gmail.com        F          7 WEST STREET          AMBAI                TIRUNELVELI          TAMILNADU         ddd03
+       101 RAM                  lll.me@gmail.com     M         65 NORTH STREET         PUTHUR               TUTICORIN            TAMILNADU         sss15
+       104 MALA                 bbb@gmail.com        F         15 SOUTH STREET         SIVAKASI             VIRUDHUNAGAR         TAMILNADU         db13
+       102 RAJU                 aaa@gmail.com        M         34 EAST STREET          BANGALORE            BANGALORE            KARNATAKA         abcde1
+
+
+2) INSERT THE VALUES INTO THE TABLE FACULTY
+
+============
+FACULTY
+============
+
+
+SQL> INSERT INTO FACULTY VALUES(101,'HEMA','hema3@gmail.com',45000.0,'M.E','hema@3');
+
+SQL> INSERT INTO FACULTY VALUES(102,'Tamilarasan','tamilarasan@gmail.com',35000.0,'M.E','tamil@5');
+
+SQL> INSERT INTO FACULTY VALUES(103,'Renuka Devi','renuka@gmail.com',40000.0,'M.E','renuka@4');
+
+SQL> INSERT INTO FACULTY VALUES(104,'Jenisha','jenisha7@gmail.com',30000.0,'phd','jeni@7');
+
+
+SQL> SELECT * FROM FACULTY;
+
+       FID FNAME                MAILID                                       SALARY QUALIFICATION                            PASSWORD
+---------- -------------------- ---------------------------------------- ---------- ---------------------------------------- --------
+       101 HEMA                 hema3@gmail.com                               45000 M.E                                      hema@3
+       102 Tamilarasan          tamilarasan@gmail.com                         35000 M.E                                      tamil@5
+       103 Renuka Devi          renuka@gmail.com                              40000 M.E                                      renuka@4
+       104 Jenisha              jenisha7@gmail.com                            30000 phd                                      jeni@7
+
+
+3) INSERT THE VALUES INTO THE TABLE COURSE
+
+==============
+COURSE
+==============
+
+
+SQL> INSERT INTO COURSE VALUES(101, 'C PROGRAMMING', 5, 'MEDIUM', 1299.00, 104, 121);
+
+SQL> INSERT INTO COURSE VALUES(102, 'CIRCUIT ANALYSIS', 3, 'MEDIUM', 1599.00, 102, 122);
+
+SQL> INSERT INTO COURSE VALUES(103, 'DATA STRUCTURES', 5, 'HARD', 1799.00, 103, 124);
+
+SQL> INSERT INTO COURSE VALUES(104, 'POWER SYSTEMS', 5, 'MEDIUM', 999.00, 101, 123);
+
+
+SQL> SELECT * FROM COURSE;
+
+     C_CID C_NAME                                     C_RATING C_TYPE         C_FEES       F_ID      D_DID
+---------- ---------------------------------------- ---------- ---------- ---------- ---------- ----------
+       101 C PROGRAMMING                                     5 MEDIUM           1299        104        121
+       102 CIRCUIT ANALYSIS                                  3 MEDIUM           1599        102        122
+       103 DATA STRUCTURES                                   5 HARD             1799        103        124
+       104 POWER SYSTEMS                                     5 MEDIUM            999        101        123
+
+
+4) INSERT THE VALUES INTO THE TABLE DEPT
+
+==============
+DEPT
+==============
+
+
+SQL> INSERT INTO DEPT (D_DID, D_NAME, D_MAILID) VALUES (121, 'CSE', 'cse@gmail.com');
+
+SQL> INSERT INTO DEPT (D_DID, D_NAME, D_MAILID) VALUES (122, 'ECE', 'ece@gmail.com');
+
+SQL> INSERT INTO DEPT (D_DID, D_NAME, D_MAILID) VALUES (123, 'EEE', 'eee@gmail.com');
+
+SQL> INSERT INTO DEPT (D_DID, D_NAME, D_MAILID) VALUES (124, 'IT', 'it@gmail.com');
+
+
+SQL> SELECT * FROM DEPT;
+
+     D_DID D_NAME     D_MAILID
+---------- ---------- ------------------------------
+       121 CSE        cse@gmail.com
+       122 ECE        ece@gmail.com
+       123 EEE        eee@gmail.com
+       124 IT         it@gmail.com
+
+
+5) INSERT THE VALUES INTO THE TABLE DEPT
+
+===============
+EXAM
+===============
+
+
+SQL> INSERT INTO EXAM VALUES(98761, '03:00:00', 'MCQ');
+
+SQL> INSERT INTO EXAM VALUES(98674, '03:00:00', 'MCQ');
+
+SQL> INSERT INTO EXAM VALUES(98896, '02:30:00', 'DESCRIPTIVE');
+
+SQL> INSERT INTO EXAM VALUES(97685, '02:00:00', 'PROGRAMMING');
+
+
+SQL> SELECT * FROM EXAM;
+
+E_QUES_CODE E_DURATION E_TYPE
+----------- ---------- --------------------
+      98761 03:00:00   MCQ
+      98674 03:00:00   MCQ
+      98896 02:30:00   DESCRIPTIVE
+      97685 02:00:00   PROGRAMMING
+
+
+6)INSERT THE VALUES INTO THE TABLE DEPT
+
+=================
+CONTEST
+=================
+
+SQL> INSERT INTO CONTEST VALUES(1001, 'CHALLENGING C', 'HARD', 101);
+
+SQL> INSERT INTO CONTEST VALUES(1002, 'TRICKY CIRCUITS', 'MEDIUM', 102);
+
+SQL> INSERT INTO CONTEST VALUES(1003, 'EPSSCOM', 'MEDIUM', 104);
+
+SQL> INSERT INTO CONTEST VALUES(1004, 'DARING DS', 'EASY', 103);
+
+
+SQL> SELECT * FROM CONTEST;
+
+     CONID CONTESTNAME                                   TYPE              CID
+---------- --------------------------------------------- ---------- ----------
+      1001 CHALLENGING C                                 HARD              101
+      1002 TRICKY CIRCUITS                               MEDIUM            102
+      1003 EPSSCOM                                       MEDIUM            104
+      1004 DARING DS                                     EASY              103
+
+
+7) INSERT THE VALUES INTO THE TABLE FEEDBACK
+
+==============
+FEEDBACK
+==============
+
+
+SQL> INSERT INTO FEEDBACK VALUES(11,5,103,103,'EXCELLENT');
+
+SQL> INSERT INTO FEEDBACK VALUES(13,5,102,101,'BETTER');
+
+SQL> INSERT INTO FEEDBACK VALUES(12,4,104,102,'GOOD');
+
+SQL> INSERT INTO FEEDBACK VALUES(14,3,101,104,'GOOD');
+
+
+SQL> SELECT * FROM FEEDBACK;
+
+      F_ID RATING                     S_ID       C_ID SUGGESTION
+---------- -------------------- ---------- ---------- ------------------------------
+        11 5                           103        103 EXCELLENT
+        13 5                           102        101 BETTER
+        12 4                           104        102 GOOD
+        14 3                           101        104 GOOD
+
+
+8) INSERT THE VALUES INTO THE TABLE STUD_PHNO
+
+==============
+STUD_PHNO
+==============
+
+
+SQL> INSERT INTO STUD_PHNO VALUES(9498262737,102);
+
+SQL> INSERT INTO STUD_PHNO VALUES(8847282457,104);
+
+SQL> INSERT INTO STUD_PHNO VALUES(9319816438,101);
+
+SQL> INSERT INTO STUD_PHNO VALUES(7982710038,102);
+
+SQL> INSERT INTO STUD_PHNO VALUES(8987433531,103);
+
+SQL> INSERT INTO STUD_PHNO VALUES(6727164347,103);
+
+
+SQL> SELECT * FROM STUD_PHNO;
+
+   PHONENO       S_ID
+---------- ----------
+9498262737        102
+8847282457        104
+9319816438        101
+7982710038        102
+8987433531        103
+6727164347        103
+
+
+9) INSERT THE VALUES INTO THE TABLE FACULTY_PHNO
+
+===============
+FACULTY_PHNO
+===============
+
+
+SQL> INSERT INTO FACULTY_PHNO VALUES(9885739345,103);
+
+SQL> INSERT INTO FACULTY_PHNO VALUES(9430936745,103);
+
+SQL> INSERT INTO FACULTY_PHNO VALUES(8689766745,101);
+
+SQL> INSERT INTO FACULTY_PHNO VALUES(9895674356,104);
+
+SQL> INSERT INTO FACULTY_PHNO VALUES(936679881,102);
+
+
+
+SQL> SELECT * FROM FACULTY_PHNO;
+
+  PHONE_NO       F_ID
+---------- ----------
+9885739345        103
+9430936745        103
+8689766745        101
+9895674356        104
+ 936679881        102
+
+
+10) INSERT THE VALUES INTO THE TABLE PARTICIPATES
+
+================
+PARTICIPATES
+================
+
+
+SQL> INSERT INTO PARTICIPATES VALUES(103,1001,'23-JUN-2023');
+
+SQL> INSERT INTO PARTICIPATES VALUES(104,1003,'13-SEP-2023');
+
+SQL> INSERT INTO PARTICIPATES VALUES(101,1004,'09-MAY-2023');
+
+SQL> INSERT INTO PARTICIPATES VALUES(102,1002,'22-AUG-2023');
+
+
+
+SQL> SELECT * FROM PARTICIPATES;
+
+      S_ID      CONID CON_DATE
+---------- ---------- ---------
+       103       1001 23-JUN-23
+       104       1003 13-SEP-23
+       101       1004 09-MAY-23
+       102       1002 22-AUG-23
+
+
+11) INSERT THE VALUES INTO THE TABLE WRITES
+
+=================
+WRITES
+=================
+
+SQL> INSERT INTO WRITES VALUES(TO_DATE('2023-11-28','YYYY-MM-DD'),'AN',98674,104);
+
+SQL> INSERT INTO WRITES VALUES(TO_DATE('2023-10-26','YYYY-MM-DD'),'FN',98761,102);
+
+SQL> INSERT INTO WRITES VALUES(TO_DATE('2023-10-23','YYYY-MM-DD'),'FN',98761,101);
+
+SQL> INSERT INTO WRITES VALUES(TO_DATE('2023-12-03','YYYY-MM-DD'),'AN',98896,103);
+
+SQL> SELECT * FROM WRITES;
+
+E_DATE    E_SESSION    QUESCODE       S_ID
+--------- ---------- ---------- ----------
+28-NOV-23 AN              98674        104
+26-OCT-23 FN              98761        102
+20-OCT-23 FN              98761        101
+03-DEC-23 AN              98896        103
+
+
+12) INSERT THE VALUES INTO THE TABLE ATTENDS
+
+=================
+ATTENDS
+=================
+
+
+SQL> INSERT INTO ATTENDS VALUES(101, 103, TO_DATE('2023-03-29','YYYY-MM-DD'));
+
+SQL> INSERT INTO ATTENDS VALUES(103, 103, TO_DATE('2023-03-12','YYYY-MM-DD'));
+
+SQL> INSERT INTO ATTENDS VALUES(104, 104, TO_DATE('2023-02-15','YYYY-MM-DD'));
+
+SQL> INSERT INTO ATTENDS VALUES(102, 101, TO_DATE('2023-01-18','YYYY-MM-DD'));
+
+
+SQL> SELECT * FROM ATTENDS;
+
+      S_ID      C_CID JOIN_DATE
+---------- ---------- ---------
+       101        103 29-MAR-23
+       103        103 12-MAR-23
+       104        104 15-FEB-23
+       102        101 18-JAN-23
+
+
+13) INSERT THE VALUES INTO THE TABLE BELONGSTO
+
+=================
+BELONGSTO
+=================
+
+
+SQL> INSERT INTO BELONGSTO VALUES(101, 97685);
+
+SQL> INSERT INTO BELONGSTO VALUES(103, 98761);
+
+SQL> INSERT INTO BELONGSTO VALUES(104, 98896);
+
+SQL> INSERT INTO BELONGSTO VALUES(102, 98761);
+
+
+SQL> SELECT * FROM BELONGSTO;
+
+     C_CID E_QUESCODE
+---------- ----------
+       101      97685
+       102      98761
+       103      98761
+       104      98896
+
+
+
+II) SELECT COMMAND:
+
+
+1) DISPLAY THE CONTENT OF THE STUDENT TABLE
+
+
+SQL> SELECT * FROM STUDENT;
+
+      S_ID S_NAME               S_MAILID             S     DOORNO STNAME               CITY                 DISTRICT             STATE             PASSWORD
+---------- -------------------- -------------------- - ---------- -------------------- -------------------- -------------------- ----------------- --------
+       103 JENY                 ddd@gmail.com        F          7 WEST STREET          AMBAI                TIRUNELVELI          TAMILNADU         ddd03
+       101 RAM                  lll.me@gmail.com     M         65 NORTH STREET         PUTHUR               TUTICORIN            TAMILNADU         sss15
+       104 MALA                 bbb@gmail.com        F         15 SOUTH STREET         SIVAKASI             VIRUDHUNAGAR         TAMILNADU         db13
+       102 RAJU                 aaa@gmail.com        M         34 EAST STREET          BANGALORE            BANGALORE            KARNATAKA         abcde1
+
+
+2) DISPLAY THE ID, NAME, MAILID DETAILS OF ALL THE STUDENT IN THE STUDENT TABLE
+
+
+SQL> SELECT S_ID,S_NAME,S_MAILID FROM STUDENT;
+
+      S_ID S_NAME               S_MAILID
+---------- -------------------- --------------------
+       103 JENY                 ddd@gmail.com
+       101 RAM                  ram@gmail.com
+       104 MALA                 bbb@gmail.com
+       102 RAJU                 aaa@gmail.com
+
+
+3) DISPLAY STUDENT ID AND THEIR SUGGESTION WHO GIVE THE RATING AS 4 OR 3 IN THE FEEDBACK TABLE
+
+
+SQL> SELECT S_ID,SUGGESTION FROM FEEDBACK WHERE RATING IN (4,3);
+
+      S_ID SUGGESTION
+---------- ------------------------------
+       103 EXCELLENT
+       102 BETTER
+       104 GOOD
+
+
+4) DISPLAY THE STUDENT ID, NAME WHO DO NOT BELONGS TO THE DISTRICT TUTICORIN OR BANGALORE FROM THE STUDENT TABLE 
+
+
+SQL> SELECT S_ID,S_NAME FROM STUDENT WHERE DISTRICT NOT IN ('TUTICORIN','BANGALORE');
+
+      S_ID S_NAME
+---------- --------------------
+       103 JENY
+       104 MALA
+
+
+5) DISPLAY THE STUDENT ID AND QUESTION CODE WHO HAS WRITTEN THE EXAM FROM 20-10-2023 TO 30-10-2023 
+
+
+SQL> SELECT S_ID,QUESCODE FROM WRITES WHERE E_DATE BETWEEN TO_DATE('2023-10-20','YYYY-MM-DD') AND TO_DATE('2023-10-30','YYYY-MM-DD');
+
+      S_ID   QUESCODE
+---------- ----------
+       102      98761
+       101      98761
+
+
+6) DISPLAY THE STUDENT NAME WHOSE NAME STARTS WITH THE LETTER 'R'
+
+
+SQL> SELECT S_NAME FROM STUDENT WHERE S_NAME LIKE 'R%';
+
+S_NAME
+--------------------
+RAM
+RAJU
+
+
+7) DISPLAY THE STUDENT ID WHO WRITE THE EXAM IN FORENOON
+
+
+SQL> SELECT S_ID FROM WRITES WHERE E_SESSION='FN';
+
+      S_ID
+----------
+       102
+       101
+
+
+8) DISPLAY THE DETAILS OF THE FEEDBACK WHICH HAVE THE RATING AS 4
+
+
+SQL> SELECT * FROM FEEDBACK WHERE RATING=4;
+
+      F_ID RATING                     S_ID       C_ID SUGGESTION
+---------- -------------------- ---------- ---------- ------------------------------
+        11 4                           103        103 EXCELLENT
+        13 4                           102        101 BETTER
+
+
+9) DISPLAY THE STUDENT NAME WHO BELONGS TO THE STATE TAMILNADU
+
+
+SQL> SELECT S_NAME AS STUD_TAMIL FROM STUDENT WHERE STATE='TAMILNADU';
+
+STUD_TAMIL
+--------------------
+JENY
+RAM
+MALA
+
+
+10) DISPLAY THE DISTINCT STATES OF THE STUDENT
+
+
+SQL> SELECT DISTINCT(STATE) FROM STUDENT;
+
+STATE
+--------------------
+TAMILNADU
+KARNATAKA
+
+
+
+11) DISPLAY THE MINIMUM SALARY GIVEN TO THE FACULTY
+
+
+SQL> SELECT MIN(SALARY) FROM FACULTY;
+
+MIN(SALARY)
+-----------
+      30000
+
+
+12) DISPLAY THE MAXIMUM SALARY GIVEN TO THE FACULTY
+
+
+SQL> SELECT MAX(SALARY) FROM FACULTY;
+
+MAX(SALARY)
+-----------
+      45000
+
+
+13) DISPLAY THE TOTAL SALARY GIVEN TO ALL THE FACULTIES
+
+
+SQL> SELECT SUM(SALARY) FROM FACULTY;
+
+SUM(SALARY)
+-----------
+     150000
+
+
+
+14) DISPLAY THE COUNT OF THE STUDENT PHONE NUMBER WHO HAVE ID AS 103  
+
+
+SQL> SELECT COUNT(S_ID) FROM STUD_PHNO WHERE S_ID=103;
+
+COUNT(S_ID)
+-----------
+          2
+
+
+15) DISPLAY THE COUNT OF ALL THE STUDENT PHONE NUMBER
+
+
+SQL> SELECT COUNT(*) FROM STUD_PHNO;
+
+  COUNT(*)
+----------
+         6
+
+
+16) DISPLAY THE NAME OF THE FACULTY IN UPPERCASE
+
+
+SQL> SELECT UPPER(FNAME) FROM FACULTY;
+
+UPPER(FNAME)
+--------------------
+HEMA
+TAMILARASAN
+RENUKA DEVI
+JENISHA
+
+
+17) DISPLAY THE NAME OF THE STUDENT IN LOWERCASE
+
+
+SQL> SELECT LOWER(S_NAME) FROM STUDENT;
+
+LOWER(S_NAME)
+--------------------
+jeny
+ram
+mala
+raju
+
+
+18) DISPLAY THE LENGTH OF THE MAILID OF THE FACULTY
+
+
+SQL> SELECT LENGTH(MAILID) FROM FACULTY;
+
+LENGTH(MAILID)
+--------------
+            15
+            21
+            16
+            18
+
+
+19) DISPLAY THE EXAM DETAILS BASED ON ASCENDING ORDER OF THE STUDENT ID  
+
+
+SQL> SELECT * FROM WRITES ORDER BY S_ID ASC;
+
+E_DATE    E_SESSION    QUESCODE       S_ID
+--------- ---------- ---------- ----------
+23-OCT-23 AN              98761        101
+26-OCT-23 AN              98761        102
+03-DEC-23 AN              98896        103
+28-NOV-23 AN              98674        104
+
+
+
+20) DISPLAY THE EXAM DETAILS BASED ON DESCENDING ORDER OF THE STUDENT ID
+
+
+SQL> SELECT S_ID,QUESCODE,E_DATE FROM WRITES ORDER BY S_ID DESC;
+
+      S_ID   QUESCODE E_DATE
+---------- ---------- ---------
+       104      98674 28-NOV-23
+       103      98896 03-DEC-23
+       102      98761 26-OCT-23
+       101      98761 23-OCT-23
+
+
+21) GROUP AND DISPLAY THE NUMBER OF STUDENTS BASED ON THEIR NATIVE STATE
+
+SQL> SELECT COUNT(S_NAME) AS NO_OF_STUDENT,STATE FROM STUDENT GROUP BY STATE;
+
+NO_OF_STUDENT STATE
+------------- --------------------
+            3 TAMILNADU
+            1 KARNATAKA
+
+
+III) UPDATE COMMAND:
+
+
+1) MODIFY THE MAIL ID OF THE STUDENT HAVING ID AS 101
+
+
+
+SQL> UPDATE STUDENT SET S_MAILID='ram@gmail.com' WHERE S_ID=101;
+
+1 row updated.
+
+SQL> SELECT * FROM STUDENT;
+
+      S_ID S_NAME               S_MAILID             S     DOORNO STNAME               CITY                 DISTRICT             STATE             PASSWORD
+---------- -------------------- -------------------- - ---------- -------------------- -------------------- -------------------- ----------------- --------
+       103 JENY                 ddd@gmail.com        F          7 WEST STREET          AMBAI                TIRUNELVELI          TAMILNADU         ddd03
+       101 RAM                  ram@gmail.com     M         65 NORTH STREET         PUTHUR               TUTICORIN            TAMILNADU         sss15
+       104 MALA                 bbb@gmail.com        F         15 SOUTH STREET         SIVAKASI             VIRUDHUNAGAR         TAMILNADU         db13
+       102 RAJU                 aaa@gmail.com        M         34 EAST STREET          BANGALORE            BANGALORE            KARNATAKA         abcde1
+
+
+2) MODIFY THE SESSION TO AFTERNOON FOR THE STUDENTS HAVING ID AS 101, 102
+
+
+SQL> UPDATE WRITES SET E_SESSION='AN' WHERE S_ID=102 OR S_ID=101;
+
+2 rows updated.
+
+SQL> SELECT * FROM WRITES;
+
+E_DATE    E_SESSION    QUESCODE       S_ID
+--------- ---------- ---------- ----------
+28-NOV-23 AN              98674        104
+26-OCT-23 AN              98761        102
+23-OCT-23 AN              98761        101
+03-DEC-23 AN              98896        103
+
+
+
+3) DECREMENT THE RATING BY 1 FOR ALL THE FEEDBACKS IN THE FEEDBACK TABLE
+
+
+SQL> UPDATE FEEDBACK SET RATING=RATING-1;
+
+4 rows updated.
+
+SQL> SELECT * FROM FEEDBACK;
+
+      F_ID RATING                     S_ID       C_ID SUGGESTION
+---------- -------------------- ---------- ---------- ------------------------------
+        11 4                           103        103 EXCELLENT
+        13 4                           102        101 BETTER
+        12 3                           104        102 GOOD
+        14 2                           101        104 GOOD
+
+
+IV) DELETE COMMAND:
+
+
+
+1) DELETE ALL THE DETAILS IN THE TABLE WRITES
+
+
+SQL> DELETE FROM WRITES;
+
+4 rows deleted.
+
+SQL> SELECT * FROM WRITES;
+
+no rows selected
+
+
+
+2) DELETE THE PHONE NUMBER DETAILS OF THE STUDENT HAVING ID AS 102
+
+
+SQL> DELETE FROM STUD_PHNO WHERE S_ID=102;
+
+2 rows deleted.
+
+SQL> SELECT * FROM STUD_PHNO;
+
+   PHONENO       S_ID
+---------- ----------
+8847282457        104
+9319816438        101
+8987433531        103
+6727164347        103
+
+
+
+
+
+

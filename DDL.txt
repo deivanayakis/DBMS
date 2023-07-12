@@ -1,0 +1,847 @@
+******************************************************************************
+NAME          : S. DEIVANAYAKI
+ROLLNO        : 21BCS003
+EXERCISE NO   : 01
+EXERCISE NAME : IMPLEMENTATION OF DATA DEFINITION LANGUAGE (DDL) COMMANDS
+******************************************************************************
+
+
+I) CREATE COMMAND:
+
+1) CREATING THE TABLE DEPT WITH ATTRIBUTES D_DID, D_NAME AND D_MAILID WITH 
+PRIMARY KEY CONSTRAINT AND UNIQUE CONSTRAINT
+
+SQL> CREATE TABLE DEPT ( D_DID INTEGER CONSTRAINT dept_did_pk PRIMARY KEY, 
+D_NAME VARCHAR2(10),D_MAILID VARCHAR2(20) CONSTRAINT dept_mailid_uk UNIQUE);
+
+Table created.
+
+SQL> DESC DEPT
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ D_DID                                     NOT NULL NUMBER(38)
+ D_NAME                                             VARCHAR2(10)
+ D_MAILID                                           VARCHAR2(20)
+
+2) CREATE THE TABLE FACULTY WITH ATTRIBUTES F_ID, FNAME,QUALIFICATION, MAILID
+, PASSWORD 
+
+SQL> CREATE TABLE FACULTY(FID INTEGER CONSTRAINT F_ID PRIMARY KEY, 
+FNAME VARCHAR(20), MAILID VARCHAR(20) UNIQUE,PASSWORD VARCHAR(30));
+
+Table created.
+
+SQL> DESC FACULTY
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FID                                       NOT NULL NUMBER(38)
+ FNAME                                              VARCHAR2(20)
+ MAILID                                             VARCHAR2(20)
+ PASSWORD                                           VARCHAR2(30)
+
+3) CREATE THE TABLE COURSE WITH ATTRIBUTES C_CID, C_NAME, C_RATING, C_TYPE AND 
+C_FEES AND SET C_CID AS ITS PRIMARY KEY
+
+SQL> CREATE TABLE COURSE ( C_CID INTEGER CONSTRAINT course_cid_pk PRIMARY KEY, 
+C_NAME VARCHAR2(10),C_RATING INTEGER CONSTRAINT course_rating_ck 
+CHECK(C_RATING IN(1, 2, 3, 4, 5)), C_TYPE VARCHAR2(10), C_FEES FLOAT, 
+F_ID INTEGER CONSTRAINT faculty_fid_fk REFERENCES FACULTY(FID));
+
+Table created.
+
+SQL> DESC COURSE
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ C_CID                                     NOT NULL NUMBER(38)
+ C_NAME                                             VARCHAR2(10)
+ C_RATING                                           NUMBER(38)
+ C_TYPE                                             VARCHAR2(10)
+ C_FEES                                             FLOAT(126)
+ F_ID                                               NUMBER(38)
+
+4) CREATE THE TABLE STUDENT WITH ATTRIBUTES S_ID, S_NAME, S_MAILID, S_GENDER, 
+DOORNO, STNAME, DISTRICT, STATE, PASSWORD AND SET PRIMARY, UNIQUE CONSTRAINTS 
+
+SQL> CREATE TABLE STUDENT(S_ID INTEGER PRIMARY KEY, S_NAME VARCHAR(20) NOT NULL 
+,S_MAILID VARCHAR(20) UNIQUE ,S_GENDER VARCHAR(1) ,DOORNO INTEGER ,STNAME VARCHAR(20) ,DISTRICT 
+VARCHAR(20) ,STATE VARCHAR(20) ,PASSWORD VARCHAR(8) UNIQUE);
+
+Table created.
+
+SQL> DESC STUDENT
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ S_ID                                      NOT NULL NUMBER(38)
+ S_NAME                                    NOT NULL VARCHAR2(20)
+ S_MAILID                                           VARCHAR2(20)
+ S_GENDER                                           VARCHAR2(1)
+ DOORNO                                             NUMBER(38)
+ STNAME                                             VARCHAR2(20)
+ DISTRICT                                           VARCHAR2(20)
+ STATE                                              VARCHAR2(20)
+ PASSWORD                                           VARCHAR2(8)
+
+5) CREATE THE TABLE EXAM WITH ITS ATTRIBUTES E_QUESCODE, E_DURATION AND E_TYPE
+
+SQL> CREATE TABLE EXAM ( E_QUESCODE INTEGER , E_DURATION VARCHAR2(10), E_TYPE 
+VARCHAR2(20));
+
+Table created.
+
+SQL> DESC EXAM
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ E_QUESCODE                                         NUMBER(38)
+ E_DURATION                                         VARCHAR2(10)
+ E_TYPE                                             VARCHAR2(20)
+
+6) CREATE TABLE CONTEST WITH ATTRIBUTES CONID, CONNAME, CONTEST TYPE.
+
+SQL> CREATE TABLE CONTEST(CONID INTEGER CONSTRAINT contest_conid_pk PRIMARY KEY,
+ CONNAME VARCHAR(45),
+   TYPE VARCHAR(10) CONSTRAINT contest_type_ck CHECK(TYPE IN('EASY', 'MEDIUM'
+, 'HARD')));
+
+Table created.
+
+SQL> DESC CONTEST
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ CONID                                     NOT NULL NUMBER(38)
+ CONNAME                                            VARCHAR2(45)
+ TYPE                                               VARCHAR2(10)
+
+7) CREATE THE TABLE FEEDBACK WITH ATTRIBUTES FEEDID, RATING, AND SET FEEDID AS 
+ITS PRIMARY KEY, S_ID & C_ID AS ITS FOREIGN KEY
+
+SQL> CREATE TABLE FEEDBACK(FEEDID INTEGER CONSTRAINT feedback_fid_pk PRIMARY 
+KEY ,RATING INTEGER NOT NULL,S_ID INTEGER CONSTRAINT student_id_fk REFERENCES 
+Student(S_ID) ,C_ID INTEGER);
+
+Table created.
+
+SQL> DESC FEEDBACK
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ FEEDID                                             NUMBER(38)
+ RATING                                    NOT NULL NUMBER(38)
+ S_ID                                               NUMBER(38)
+ C_ID                                               NUMBER(38)
+
+8) CREATE TABLE FACULTY PHONE NUMBER WITH ATTRIBUTES PHONE_NO, F_ID AS FOREIGN 
+KEY FROM TABLE FACULTY.
+
+SQL> CREATE TABLE FACULTY_PHNO(PHONE_NO INTEGER,  F_ID INTEGER CONSTRAINT 
+phone_no_fk REFERENCES faculty(fid));
+
+Table created.
+
+SQL> DESC FACULTY_PHNO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ PHONE_NO                                           NUMBER(38)
+ F_ID                                               NUMBER(38)
+
+9)CREATE THE TABLE STUD_PHNO WITH ATTRIBUTES PHONENO AND SID AS ITS FOREIGN KEY
+
+SQL> CREATE TABLE STUD_PHNO(PHONENO INTEGER ,SID INTEGER CONSTRAINT PHNO_ID_fk 
+REFERENCES Student(S_ID));
+
+Table created.
+
+SQL> DESC STUD_PHNO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ PHONENO                                            NUMBER(38)
+ SID                                                NUMBER(38)
+
+10) CREATE THE TABLE WRITES WITH ATTRIBUTES E_DATE, E_SESSION, QUESCODE AND 
+SET S_ID AS ITS FOREIGN KEY
+
+SQL> CREATE TABLE WRITES(E_DATE DATE, E_SESSION VARCHAR(10), QUESCODE INTEGER,
+ S_ID INTEGER CONSTRAINT WRITES_ID_fk REFERENCES Student(S_ID));
+
+Table created.
+
+SQL> DESC WRITES
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ E_DATE                                             DATE
+ E_SESSION                                          VARCHAR2(10)
+ QUESCODE                                           NUMBER(38)
+ S_ID                                               NUMBER(38)
+2
+11) CREATE THE TABLE ATTENDS WITH ATTRIBUTES S_SID AND C_CID WITH FOREIGN 
+KEY CONSTRAINT 
+
+SQL> CREATE TABLE ATTENDS(S_ID INTEGER CONSTRAINT attends_sid_fk REFERENCES
+STUDENT(S_ID),C_CID INTEGER CONSTRAINT attends_cid_fk REFERENCES COURSE(C_CID));
+
+Table created.
+
+SQL> DESC ATTENDS
+ Name                                      Null?    Type
+ ----------------------------------------- -------- --------------------------
+ S_ID                                               NUMBER(38)
+ C_CID                                              NUMBER(38)
+
+12) CREATE TABLE PARTICIPATES WITH ATTRIBUTES S_ID(FOREIGN KEY), 
+CONID(FOREIGN KEY)
+
+SQL> CREATE TABLE PARTICIPATES(S_ID INTEGER CONSTRAINT participates_sid_fk 
+REFERENCES STUDENT(S_ID), CONID INTEGER CONSTRAINT participates_conid_fk
+ REFERENCES CONTEST(conid));
+
+Table created.
+
+SQL> DESC PARTICIPATES
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                               NUMBER(38)
+ CONID                                              NUMBER(38)
+
+13) CREATE THE TABLE BELONGSTO WITH ATTRIBUTES C_CID AND E_QUESCODE WITH 
+FOREIGN KEY CONSTRAINT THAT REFERENCES THE ATTRIBUTE C_CID OF TABLE COURSE
+
+SQL>CREATE TABLE BELONGSTO(C_CID INTEGER CONSTRAINT belongsto_cid_fk REFERENCES
+ COURSE(C_CID), E_QUESCODE INTEGER);
+
+Table created.
+
+SQL> DESC BELONGSTO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ C_CID                                              NUMBER(38)
+ E_QUESCODE                                         NUMBER(38)
+
+14) CREATE THE TABLE HANDLES THAT HAS S_ID AND F_ID AS ITS ATTRIBUTES
+
+SQL> CREATE TABLE HANDLES(S_ID INTEGER, F_ID INTEGER);
+
+Table created.
+
+SQL> DESC HANDLES
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ S_ID                                               NUMBER(38)
+ F_ID                                                NUMBER(38)
+
+
+II) ALTER COMMAND:
+
+1) ALTER THE TABLE DEPT BY MODIFYING DATATYPE OF AN ATTRIBUTE D_MAILID
+
+SQL> ALTER TABLE DEPT MODIFY D_MAILID VARCHAR2(30);
+
+Table altered.
+
+SQL> DESC DEPT
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ D_DID                                     NOT NULL NUMBER(38)
+ D_NAME                                             VARCHAR2(10)
+ D_MAILID                                           VARCHAR2(30)
+
+2) ALTER THE TABLE STUDENT BY MODIFYING DATATYPE OF AN ATTRIBUTE CITY
+
+SQL> ALTER TABLE STUDENT ADD CITY VARCHAR(20);
+
+Table altered.
+
+SQL> DESC STUDENT
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ S_ID                                      NOT NULL NUMBER(38)
+ S_NAME                                    NOT NULL VARCHAR2(20)
+ S_MAILID                                           VARCHAR2(20)
+ S_GENDER                                           VARCHAR2(1)
+ DOORNO                                             NUMBER(38)
+ STNAME                                             VARCHAR2(20)
+ DISTRICT                                           VARCHAR2(20)
+ STATE                                              VARCHAR2(20)
+ PASSWORD                                           VARCHAR2(8)
+ CITY                                               VARCHAR2(20)
+
+3)ALTER THE TABLE STUDENT BY ADDING CHECK CONSTRAINTS FOR AN ATTRIBUTE S_GENDER
+
+SQL> ALTER TABLE STUDENT ADD CONSTRAINT student_gender_ck 
+CHECK(S_GENDER IN('F', 'M'));
+
+Table altered.
+
+SQL> DESC STUDENT
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ S_ID                                      NOT NULL NUMBER(38)
+ S_NAME                                    NOT NULL VARCHAR2(20)
+ S_MAILID                                           VARCHAR2(20)
+ S_GENDER                                           VARCHAR2(1)
+ DOORNO                                             NUMBER(38)
+ STNAME                                             VARCHAR2(20)
+ DISTRICT                                           VARCHAR2(20)
+ STATE                                              VARCHAR2(20)
+ PASSWORD                                           VARCHAR2(8)
+ CITY                                               VARCHAR2(20)
+
+4) ALTER THE TABLE STUDENT BY RENAMING AN ATTRIBUTE STNAME AS STREET
+
+SQL> ALTER TABLE STUDENT RENAME COLUMN STNAME TO STREET;
+
+Table altered.
+
+SQL> DESC STUDENT
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                      NOT NULL NUMBER(38)
+ S_NAME                                    NOT NULL VARCHAR2(20)
+ S_MAILID                                           VARCHAR2(20)
+ S_GENDER                                           VARCHAR2(1)
+ DOORNO                                             NUMBER(38)
+ STREET                                             VARCHAR2(20)
+ DISTRICT                                           VARCHAR2(20)
+ STATE                                              VARCHAR2(20)
+ PASSWORD                                           VARCHAR2(8)
+ CITY                                               VARCHAR2(20)
+
+5) ALTER TABLE FACULTY BY ADDING EXTRA COLUMN AS SALARY.
+
+SQL> ALTER TABLE FACULTY ADD SALARY FLOAT(30);
+
+Table altered.
+
+SQL> DESC FACULTY
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FID                                       NOT NULL NUMBER(38)
+ FNAME                                              VARCHAR2(20)
+ MAILID                                             VARCHAR2(20)
+ PASSWORD                                           VARCHAR2(30)
+ SALARY                                             FLOAT(30)
+
+6) ALTER TABLE FACULTY BY MODIFYING THE DATATYPE OF THE ATTRIBUTE PASSWORD.
+
+SQL> ALTER TABLE FACULTY MODIFY PASSWORD VARCHAR(25);
+
+Table altered.
+
+SQL> DESC FACULTY
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FID                                       NOT NULL NUMBER(38)
+ FNAME                                              VARCHAR2(20)
+ MAILID                                             VARCHAR2(20)
+ PASSWORD                                           VARCHAR2(25)
+ SALARY                                             FLOAT(30)
+
+7) ALTER TABLE FACULTY BY DROPPING THE ATTRIBUTE PASSWORD. 
+
+SQL> ALTER TABLE FACULTY DROP(PASSWORD);
+
+Table altered.
+
+SQL> DESC FACULTY
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FID                                       NOT NULL NUMBER(38)
+ FNAME                                              VARCHAR2(20)
+ MAILID                                             VARCHAR2(20)
+ SALARY                                             FLOAT(30)
+
+8) ALTER THE TABLE BY RENAMING AN ATTRIBUTE E_QUESCODE TO E_QUES_CODE
+
+SQL> ALTER TABLE EXAM RENAME COLUMN E_QUESCODE TO E_QUES_CODE;
+
+Table altered.
+
+SQL> DESC EXAM
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ E_QUES_CODE                                        NUMBER(38)
+ E_DURATION                                         VARCHAR2(10)
+ E_TYPE                                             VARCHAR2(20)
+
+9)ALTER THE TABLE EXAM BY ADDING PRIMARY KEY CONSTRAINT TO ATTRIBUTE E_QUES_CODE
+
+SQL> ALTER TABLE EXAM ADD CONSTRAINT exam_quescode_pk PRIMARY KEY(E_QUES_CODE);
+
+Table altered.
+
+SQL> DESC EXAM
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ E_QUES_CODE                               NOT NULL NUMBER(38)
+ E_DURATION                                         VARCHAR2(10)
+ E_TYPE                                             VARCHAR2(20)
+
+10) ALTER THE TABLE BELONGSTO BY ADDING FOREIGN KEY CONSTRAINT TO ATTRIBUTE 
+E_QUESCODE WHICH REFERNCES ATTRIBUTE E_QUES_CODE OF TABLE EXAM
+
+SQL> ALTER TABLE BELONGSTO ADD CONSTRAINT belongsto_quescode_fk 
+FOREIGN KEY(E_QUESCODE) REFERENCES EXAM(E_QUES_CODE);
+
+Table altered.
+
+SQL> DESC BELONGSTO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ C_CID                                              NUMBER(38)
+ E_QUESCODE                                         NUMBER(38)
+
+11) ALTER THE TABLE COURSE BY ATTRIBUTE D_DID WITH FOREIGN KEY CONSTRAINT
+
+SQL> ALTER TABLE COURSE ADD D_DID INTEGER;
+
+Table altered.
+
+SQL> ALTER TABLE COURSE ADD CONSTRAINT course_did_fk FOREIGN KEY(D_DID) 
+REFERENCES DEPT(D_DID);
+
+Table altered.
+
+SQL> DESC COURSE
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ C_CID                                     NOT NULL NUMBER(38)
+ C_NAME                                             VARCHAR2(30)
+ C_RATING                                           NUMBER(38)
+ C_TYPE                                             VARCHAR2(10)
+ C_FEES                                             FLOAT(126)
+ D_DID                                              NUMBER(38)
+
+12) ALTER THE TABLE FEEDBACK BY ADDING AN ATTRIBUTE SUGGESTION
+
+SQL> ALTER TABLE FEEDBACK ADD SUGGESTION VARCHAR(30);
+
+Table altered.
+
+SQL> DESC FEEDBACK
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FEEDID                                    NOT NULL NUMBER(38)
+ RATING                                    NOT NULL NUMBER(38)
+ S_ID                                               NUMBER(38)
+ C_ID                                               NUMBER(38)
+ SUGGESTION                                         VARCHAR2(30)
+
+13) ALTER THE TABLE FEEDBACK BY MODIFYING DATATYPE OF AN ATTRIBUTE RATING
+
+SQL> ALTER TABLE FEEDBACK MODIFY RATING VARCHAR2(20);
+
+Table altered.
+
+SQL> DESC FEEDBACK
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FEEDID                                    NOT NULL NUMBER(38)
+ RATING                                    NOT NULL VARCHAR2(20)
+ S_ID                                               NUMBER(38)
+ C_ID                                               NUMBER(38)
+ SUGGESTION                                         VARCHAR2(30)
+
+14) ALTER THE TABLE FEEDBACK BY DROPPING PRIMARY KEY CONSTRAINTS OF AN 
+ATTRIBUTE FEEDID
+
+SQL> ALTER TABLE FEEDBACK DROP CONSTRAINT FEEDID;
+
+Table altered.
+
+SQL> DESC FEEDBACK
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FEEDID                                    	    NUMBER(38)
+ RATING                                    NOT NULL VARCHAR2(20)
+ S_ID                                               NUMBER(38)
+ C_ID                                               NUMBER(38)
+ SUGGESTION                                         VARCHAR2(30)
+
+15) ALTER THE TABLE FEEDBACK BY ADDING PRIMARY KEY CONSTRAINTS TO 
+AN ATTRIBUTE FEEDID
+
+SQL> ALTER TABLE FEEDBACK ADD CONSTRAINT FEED_ID PRIMARY KEY(FEEDID);
+
+Table altered.
+
+SQL> DESC FEEDBACK
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FEEDID                                    NOT NULL NUMBER(38)
+ RATING                                    NOT NULL VARCHAR2(20)
+ S_ID                                               NUMBER(38)
+ C_ID                                               NUMBER(38)
+ SUGGESTION                                         VARCHAR2(30)
+
+16) ALTER THE TABLE FACULTY_PHNO BY MODIFYING PHONE NO AS NOT NULL
+
+SQL> ALTER TABLE FACULTY_PHNO MODIFY PHONE_NO NOT NULL;
+
+Table altered.
+
+SQL> DESC FACULTY_PHNO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PHONE_NO                                  NOT NULL NUMBER(38)
+ F_ID                                               NUMBER(38)
+
+17) ALTER THE TABLE CONTEST BY ADDING FOREIGN KEY CONSTRAINT TO ATTRIBUTE C_CID 
+WHICH REFERNCES ATTRIBUTE C_CID OF TABLE COURSE
+
+SQL> ALTER TABLE CONTEST ADD(CID INTEGER CONSTRAINT CONTEST_CONID_FK REFERENCES 
+COURSE(C_CID));
+
+Table altered.
+
+SQL> DESC CONTEST
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CONID                                     NOT NULL NUMBER(38)
+ CONNAME                                            VARCHAR2(45)
+ TYPE                                               VARCHAR2(10)
+ CID                                                NUMBER(38)
+
+18) ALTER TABLE CONTEST BY RENAMING THE ATTRIBUTE CONNAME TO CONTESTNAME.
+
+SQL> ALTER TABLE CONTEST RENAME COLUMN CONNAME TO CONTESTNAME;
+
+Table altered.
+
+SQL> DESC CONTEST
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CONID                                     NOT NULL NUMBER(38)
+ CONTESTNAME                                        VARCHAR2(45)
+ TYPE                                               VARCHAR2(10)
+ CID                                                NUMBER(38)
+
+19) ALTER THE TABLE PARTICIPATES BY ADDING NEW COLUMN WITH ATTRIBUTE CON_DATE 
+WITH DATE DATATYPE.
+
+SQL> ALTER TABLE PARTICIPATES ADD CON_DATE DATE;
+
+Table altered.
+
+SQL> DESC PARTICIPATES
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                               NUMBER(38)
+ CONID                                              NUMBER(38)
+ CON_DATE                                           DATE
+
+20) ALTER THE TABLE STUD_PHNO BY MODIFYING CONSTRAINTS OF AN ATTRIBUTE PHONENO
+
+SQL> ALTER TABLE STUD_PHNO MODIFY PHONENO NOT NULL;
+
+Table altered.
+
+SQL> DESC STUD_PHNO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PHONENO                                   NOT NULL NUMBER(38)
+ SID                                                NUMBER(38)
+
+21) ALTER THE TABLE WRITES BY ADDING FOREIGN KEY CONSTRAINTS TO AN ATTRIBUTE 
+QUESCODE THAT REFERENCES S_ID
+
+SQL> ALTER TABLE WRITES ADD CONSTRAINT writes_quescode_fk FOREIGN KEY(QUESCODE) 
+REFERENCES STUDENT(S_ID);
+
+Table altered.
+
+SQL> DESC WRITES
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ E_DATE                                             DATE
+ E_SESSION                                          VARCHAR2(10)
+ QUESCODE                                           NUMBER(38)
+ S_ID                                               NUMBER(38)
+
+22) ALTER THE TABLE WRITES BY MODIFYING CONSTRAINT OF AN ATTRIBUTE E_DATE
+
+SQL> ALTER TABLE WRITES MODIFY E_DATE NOT NULL;
+
+Table altered.
+
+SQL> DESC WRITES
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ E_DATE                                    NOT NULL DATE
+ E_SESSION                                          VARCHAR2(10)
+ QUESCODE                                  NOT NULL NUMBER(38)
+ S_ID                                               NUMBER(38)
+
+23) ALTER THE TABLE ATTENDS BY ADDING AN ATTRIBUTE JOIN_DATE
+
+SQL> ALTER TABLE ATTENDS ADD JOIN_DATE DATE
+
+Table altered.
+
+SQL> DESC ATTENDS
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                               NUMBER(38)
+ C_CID                                              NUMBER(38)
+ JOIN_DATE                                          DATE
+
+24)  ADD COMPOSITE PRIMARY TO THE TABLE FACULTY_PHNO
+
+SQL> ALTER TABLE FACULTY_PHNO ADD CONSTRAINT facultyphno_fidph_pk 
+PRIMARY KEY(F_ID, PHONE_NO);
+
+Table altered.
+
+SQL> DESC FACULTY_PHNO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PHONE_NO                                  NOT NULL NUMBER(38)
+ F_ID                                      NOT NULL NUMBER(38)
+
+25) ADD COMPOSITE PRIMARY TO THE TABLE STUD_PHNO
+
+SQL> ALTER TABLE WRITES ADD CONSTRAINT writes_sidques_pk 
+PRIMARY KEY(S_ID, QUESCODE);
+
+Table altered.
+
+SQL> DESC WRITES
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ E_DATE                                    NOT NULL DATE
+ E_SESSION                                          VARCHAR2(10)
+ QUESCODE                                  NOT NULL NUMBER(38)
+ S_ID                                      NOT NULL NUMBER(38)
+
+26) MAKE S_ID AND C_CID AS PRIMARY KEY OF THE TABLE ATTENDS
+
+SQL> ALTER TABLE ATTENDS ADD CONSTRAINT attends_sidcid_pk 
+PRIMARY KEY(S_ID, C_CID);
+
+Table altered.
+
+SQL> DESC ATTENDS
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ---------------------------
+ S_ID                                      NOT NULL NUMBER(38)
+ C_CID                                     NOT NULL NUMBER(38)
+ JOIN_DATE                                          DATE
+
+27) MAKE S_ID AND CONID AS PRIMARY KEY OF THE TABLE PARTICIPATES
+
+SQL> ALTER TABLE PARTICIPATES ADD CONSTRAINT participates_sidconid_pk 
+PRIMARY KEY(S_ID, CONID);
+
+Table altered.
+
+SQL> DESC PARTICIPATES
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                      NOT NULL NUMBER(38)
+ CONID                                     NOT NULL NUMBER(38)
+ CON_DATE                                           DATE
+
+28) MAKE S_ID AND E_QUESCODE AS PRIMARY KEY OF THE TABLE BELONGSTO
+
+SQL> ALTER TABLE BELONGSTO ADD CONSTRAINT belongsto_cidques_pk 
+PRIMARY KEY(C_ID, E_QUESCODE);
+
+Table altered.
+
+SQL> DESC BELONGSTO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ C_CID                                     NOT NULL NUMBER(38)
+ E_QUESCODE                                NOT NULL NUMBER(38)
+
+
+III) TRUNCATE COMMAND:
+
+1) TRUNCATE THE TABLE COURSE
+
+SQL> TRUNCATE TABLE COURSE;
+
+Table truncated.
+
+SQL> DESC COURSE
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ C_CID                                     NOT NULL NUMBER(38)
+ C_NAME                                             VARCHAR2(10)
+ C_RATING                                           NUMBER(38)
+ C_TYPE                                             VARCHAR2(10)
+ C_FEES                                             FLOAT(126)
+ F_ID                                               NUMBER(38)
+ D_DID                                              NUMBER(38)
+
+
+IV) DROP COMMAND:
+
+1) DROP THE TABLE HANDLES
+
+SQL> DROP TABLE HANDLES;
+
+Table dropped.
+
+SQL> DESC HANDLES
+ERROR:
+ORA-04043: object HANDLES does not exist
+
+
+LIST THE TABLES OF THE ONLINE COURSE MANAGEMENT SYSTEM
+-------------------------------------------------------------------------------
+
+----------
+1.STUDENT
+----------
+
+SQL> DESC STUDENT
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                      NOT NULL NUMBER(38)
+ S_NAME                                    NOT NULL VARCHAR2(20)
+ S_MAILID                                           VARCHAR2(20)
+ S_GENDER                                  NOT NULL VARCHAR2(1)
+ DOORNO                                             NUMBER(38)
+ STNAME                                             VARCHAR2(20)
+ CITY                                               VARCHAR2(20)
+ DISTRICT                                           VARCHAR2(20)
+ STATE                                              VARCHAR2(20)
+ PASSWORD                                           VARCHAR2(8)
+
+----------
+2.FACULTY
+----------
+
+SQL> DESC FACULTY
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FID                                       NOT NULL NUMBER(38)
+ FNAME                                              VARCHAR2(20)
+ MAILID                                             VARCHAR2(20)
+ PASSWORD                                           VARCHAR2(30)
+ QUALIFICATION                                      VARCHAR2(20)
+ F_ID                                               NUMBER(38)
+ SALARY                                             FLOAT(30)
+
+----------
+3.COURSE
+----------
+
+SQL> DESC COURSE
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ C_CID                                     NOT NULL NUMBER(38)
+ C_NAME                                             VARCHAR2(10)
+ C_RATING                                           NUMBER(38)
+ C_TYPE                                             VARCHAR2(10)
+ C_FEES                                             FLOAT(126)
+ D_DID                                              NUMBER(38)
+
+---------
+4.DEPT
+---------
+
+SQL> DESC DEPT
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ D_DID                                     NOT NULL NUMBER(38)
+ D_NAME                                             VARCHAR2(10)
+ D_MAILID                                           VARCHAR2(30)
+
+---------
+5.EXAM
+---------
+
+SQL> DESC EXAM
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ E_QUES_CODE                               NOT NULL NUMBER(38)
+ E_DURATION                                         VARCHAR2(10)
+ E_TYPE                                             VARCHAR2(20)
+
+----------
+6.CONTEST
+----------
+
+SQL> DESC CONTEST
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CONID                                     NOT NULL NUMBER(38)
+ CONTESTNAME                                        VARCHAR2(45)
+ TYPE                                               VARCHAR2(10)
+ CID                                                NUMBER(38)
+
+-----------
+7.FEEDBACK
+-----------
+
+SQL> DESC FEEDBACK
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ F_ID                                      NOT NULL NUMBER(38)
+ RATING                                    NOT NULL VARCHAR2(20)
+ S_ID                                               NUMBER(38)
+ C_ID                                               NUMBER(38)
+ SUGGESTION                                         VARCHAR2(30)
+
+---------------
+8.FACULTY_PHNO
+---------------
+
+SQL> DESC FACULTY_PHNO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PHONE_NO                                  NOT NULL NUMBER(38)
+ F_ID                                               NUMBER(38)
+
+-------------
+9.STUD_PHNO
+-------------
+
+SQL> DESC STUD_PHNO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PHONENO                                   NOT NULL NUMBER(38)
+ S_ID                                               NUMBER(38)
+
+-----------
+10.WRITES
+-----------
+
+SQL> DESC WRITES
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ E_DATE                                             DATE
+ E_SESSION                                          VARCHAR2(10)
+ QUESCODE                                           NUMBER(38)
+ S_ID                                               NUMBER(38)
+
+-----------
+11.ATTENDS
+-----------
+
+SQL> DESC ATTENDS
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                               NUMBER(38)
+ C_CID                                              NUMBER(38)
+ JOIN_DATE                                          DATE
+
+----------------
+12.PARTICIPATES
+----------------
+
+SQL> DESC PARTICIPATES
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                               NUMBER(38)
+ CONID                                              NUMBER(38)
+ CON_DATE                                           DATE
+
+-------------
+13.BELONGSTO
+-------------
+
+SQL> DESC BELONGSTO
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ C_CID                                              NUMBER(38)
+ E_QUESCODE                                         NUMBER(38)
+
