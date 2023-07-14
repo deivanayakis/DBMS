@@ -1,9 +1,3 @@
-******************************************************************************
-NAME          : S. DEIVANAYAKI
-ROLLNO        : 21BCS003
-EXERCISE NO   : 01
-EXERCISE NAME : IMPLEMENTATION OF DATA DEFINITION LANGUAGE (DDL) COMMANDS
-******************************************************************************
 
 
 I) CREATE COMMAND:
