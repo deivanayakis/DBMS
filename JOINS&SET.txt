@@ -1,0 +1,790 @@
+
+*************
+ STUDENT
+*************
+
+
+SQL> SELECT * FROM STUDENT;
+
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+       103 JENY                 ddd@gmail.com        F          7
+WEST STREET          AMBAI                TIRUNELVELI
+TAMILNADU            ddd03
+
+       101 RAM                  ram@gmail.com        M         65
+NORTH STREET         PUTHUR               TUTICORIN
+TAMILNADU            sss15
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+
+       104 MALA                 bbb@gmail.com        F         15
+SOUTH STREET         SIVAKASI             VIRUDHUNAGAR
+TAMILNADU            db13
+
+       102 RAJU                 aaa@gmail.com        M         34
+EAST STREET          BANGALORE            BANGALORE
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+KARNATAKA            abcde1
+
+       105 NANDHINI             nc@gmail.com         F          7
+ASHOK STREET         MAGATHAM             AGRA
+NEW DELHI            cn100
+
+       106 BABU                 bab@gmail.com        F          7
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+NEHRU STREET         PALLAVARAM           CHENNAI
+TAMILNADU            boba100
+
+
+6 rows selected.
+
+
+
+***************
+FEEDBACK
+***************
+
+
+SQL> SELECT * FROM FEEDBACK;
+
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        11 4                           103        103
+EXCELLENT
+
+        13 4                           102        101
+BETTER
+
+        12 3                           104        102
+GOOD
+
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        14 2                           101        104
+GOOD
+
+        15 4                           106        101
+EXCELLENT
+
+
+*************
+WRITES
+*************
+
+
+SQL> SELECT * FROM WRITES;
+
+
+E_DATE    E_SESSION    QUESCODE       S_ID
+--------- ---------- ---------- ----------
+28-NOV-23 AN              98674        104
+18-MAY-23 FN              98896        101
+15-SEP-23 FN              98674        105
+20-OCT-23 FN              97685        106
+26-OCT-23 AN              98761        102
+23-OCT-23 AN              98761        101
+03-DEC-23 AN              98896        103
+
+7 rows selected.
+
+
+***************
+STUD_PHNO
+***************
+
+
+SQL> SELECT * FROM STUD_PHNO;
+
+
+   PHONENO       S_ID
+---------- ----------
+8847282457        104
+9319816438        101
+8987433531        103
+6727164347        103
+9498262737        102
+7982710038        102
+
+6 rows selected.
+
+
+***************
+EXAM
+***************
+
+
+SQL> SELECT * FROM EXAM;
+
+
+E_QUES_CODE E_DURATION E_TYPE
+----------- ---------- --------------------
+      98761 03:00:00   MCQ
+      98674 03:00:00   MCQ
+      98896 02:30:00   DESCRIPTIVE
+      97685 02:00:00   PROGRAMMING
+
+
+***************
+FACULTY
+***************
+
+
+SQL> SELECT * FROM FACULTY;
+
+
+       FID FNAME                MAILID
+---------- -------------------- ----------------------------------------
+    SALARY QUALIFICATION                            PASSWORD
+---------- ---------------------------------------- --------
+       101 HEMA                 hema3@gmail.com
+     45000 M.E                                      hema@3
+
+       102 Tamilarasan          tamilarasan@gmail.com
+     35000 M.E                                      tamil@5
+
+       103 Renuka Devi          renuka@gmail.com
+     40000 M.E                                      renuka@4
+
+
+       FID FNAME                MAILID
+---------- -------------------- ----------------------------------------
+    SALARY QUALIFICATION                            PASSWORD
+---------- ---------------------------------------- --------
+       104 Jenisha              jenisha7@gmail.com
+     30000 phd                                      jeni@7
+
+       105 Varun                varun7@gmail.com
+     40000 phd                                      varu@7
+
+
+
+----------
+I) JOINS
+----------
+
+
+*************************************************************************
+1) QUERY TO DISPLAY THE DETAILS OF THE STUDENT AND THEIR WRITTEN EXAM BY 
+PERFORMING THE  OPERATION CROSS JOIN (SIMILIAR TO CARTESIAN PRODUCT)
+*************************************************************************
+
+SQL> SELECT * FROM STUDENT CROSS JOIN WRITES;
+
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD E_DATE    E_SESSION    QUESCODE       S_ID
+-------------------- -------- --------- ---------- ---------- ----------
+       103 JENY                 ddd@gmail.com        F          7
+WEST STREET          AMBAI                TIRUNELVELI
+TAMILNADU            ddd03    28-NOV-23 AN              98674        104
+
+       103 JENY                 ddd@gmail.com        F          7
+WEST STREET          AMBAI                TIRUNELVELI
+TAMILNADU            ddd03    18-MAY-23 FN              98896        101
+
+42 rows selected.
+
+
+
+*************************************************************************
+2) QUERY TO DISPLAY THE DETAILS OF THE STUDENT AND THEIR WRITTEN EXAM BY 
+PERFORMING THE OPERATION CROSS JOIN (SIMILIAR TO CARTESIAN PRODUCT) WHEN 
+STUDENT ID IS SAME
+*************************************************************************
+
+
+SQL> SELECT * FROM STUDENT S CROSS JOIN WRITES W WHERE S.S_ID=W.S_ID;
+
+
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD E_DATE    E_SESSION    QUESCODE       S_ID
+-------------------- -------- --------- ---------- ---------- ----------
+       104 MALA                 bbb@gmail.com        F         15
+SOUTH STREET         SIVAKASI             VIRUDHUNAGAR
+TAMILNADU            db13     28-NOV-23 AN              98674        104
+
+       101 RAM                  ram@gmail.com        M         65
+NORTH STREET         PUTHUR               TUTICORIN
+TAMILNADU            sss15    18-MAY-23 FN              98896        101
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD E_DATE    E_SESSION    QUESCODE       S_ID
+-------------------- -------- --------- ---------- ---------- ----------
+
+       105 NANDHINI             nc@gmail.com         F          7
+ASHOK STREET         MAGATHAM             AGRA
+NEW DELHI            cn100    15-SEP-23 FN              98674        105
+
+       106 BABU                 bab@gmail.com        F          7
+NEHRU STREET         PALLAVARAM           CHENNAI
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD E_DATE    E_SESSION    QUESCODE       S_ID
+-------------------- -------- --------- ---------- ---------- ----------
+TAMILNADU            boba100  20-OCT-23 FN              97685        106
+
+       102 RAJU                 aaa@gmail.com        M         34
+EAST STREET          BANGALORE            BANGALORE
+KARNATAKA            abcde1   26-OCT-23 AN              98761        102
+
+       101 RAM                  ram@gmail.com        M         65
+
+
+7 rows selected.
+
+
+**************************************************************************
+3) QUERY TO DISPLAY THE DETAILS OF THE EXAM WRITTEN AND ABOUT THE EXAM BY 
+PERFORMING THE OPERATION NATURAL JOIN 
+**************************************************************************
+
+
+SQL> SELECT * FROM WRITES NATURAL JOIN EXAM;
+
+E_DATE    E_SESSION    QUESCODE       S_ID E_QUES_CODE E_DURATION E_TYPE
+--------- ---------- ---------- ---------- ----------- ---------- -------------
+28-NOV-23 AN              98674        104       98761 03:00:00   MCQ
+28-NOV-23 AN              98674        104       98674 03:00:00   MCQ
+28-NOV-23 AN              98674        104       98896 02:30:00   DESCRIPTIVE
+28-NOV-23 AN              98674        104       97685 02:00:00   PROGRAMMING
+18-MAY-23 FN              98896        101       98761 03:00:00   MCQ
+18-MAY-23 FN              98896        101       98674 03:00:00   MCQ
+18-MAY-23 FN              98896        101       98896 02:30:00   DESCRIPTIVE
+18-MAY-23 FN              98896        101       97685 02:00:00   PROGRAMMING
+15-SEP-23 FN              98674        105       98761 03:00:00   MCQ
+15-SEP-23 FN              98674        105       98674 03:00:00   MCQ
+15-SEP-23 FN              98674        105       98896 02:30:00   DESCRIPTIVE
+
+E_DATE    E_SESSION    QUESCODE       S_ID E_QUES_CODE E_DURATION E_TYPE
+--------- ---------- ---------- ---------- ----------- ---------- -------------
+15-SEP-23 FN              98674        105       97685 02:00:00   PROGRAMMING
+20-OCT-23 FN              97685        106       98761 03:00:00   MCQ
+20-OCT-23 FN              97685        106       98674 03:00:00   MCQ
+20-OCT-23 FN              97685        106       98896 02:30:00   DESCRIPTIVE
+20-OCT-23 FN              97685        106       97685 02:00:00   PROGRAMMING
+26-OCT-23 AN              98761        102       98761 03:00:00   MCQ
+26-OCT-23 AN              98761        102       98674 03:00:00   MCQ
+26-OCT-23 AN              98761        102       98896 02:30:00   DESCRIPTIVE
+26-OCT-23 AN              98761        102       97685 02:00:00   PROGRAMMING
+
+28 rows selected.
+
+
+*******************************************************************************
+4) QUERY TO DISPLAY THE DETAILS OF THE EXAM WRITTEN AND ABOUT THE EXAM BY 
+PERFORMING THE OPERATION NATURAL JOIN WHEN QUESCODE IS SAME AND THE EXAM TYPE
+ AS MCQ
+*******************************************************************************
+
+
+SQL> SELECT * FROM WRITES W NATURAL JOIN EXAM E WHERE W.QUESCODE=E.E_QUES_CODE 
+AND E.E_TYPE='MCQ';
+
+
+E_DATE    E_SESSION    QUESCODE       S_ID E_QUES_CODE E_DURATION E_TYPE
+--------- ---------- ---------- ---------- ----------- ---------- ------------
+28-NOV-23 AN              98674        104       98674 03:00:00   MCQ
+15-SEP-23 FN              98674        105       98674 03:00:00   MCQ
+26-OCT-23 AN              98761        102       98761 03:00:00   MCQ
+23-OCT-23 AN              98761        101       98761 03:00:00   MCQ
+
+
+******************************************************************************
+5) QUERY TO DISPLAY THE STUDENT ID, NAME DETAILS BY PERFORMING THE OPERATION 
+SELF JOIN
+******************************************************************************
+
+
+SQL> SELECT S1.S_ID,S2.S_NAME FROM STUDENT S1,STUDENT S2;
+
+      S_ID S_NAME
+---------- --------------------
+       101 JENY
+       101 RAM
+       101 MALA
+       101 RAJU
+       101 NANDHINI
+       101 BABU
+       102 JENY
+       102 RAM
+       102 MALA
+       102 RAJU
+       102 NANDHINI
+
+      S_ID S_NAME
+---------- --------------------
+       102 BABU
+       103 JENY
+       103 RAM
+       103 MALA
+       103 RAJU
+       103 NANDHINI
+       103 BABU
+       104 JENY
+       104 RAM
+       104 MALA
+       104 RAJU
+
+      S_ID S_NAME
+---------- --------------------
+       104 NANDHINI
+       104 BABU
+       105 JENY
+       105 RAM
+       105 MALA
+       105 RAJU
+       105 NANDHINI
+       105 BABU
+       106 JENY
+       106 RAM
+       106 MALA
+
+      S_ID S_NAME
+---------- --------------------
+       106 RAJU
+       106 NANDHINI
+       106 BABU
+
+36 rows selected.
+
+
+*******************************************************************************
+6) QUERY TO DISPLAY THE DETAILS OF THE STUDENT ID,NAME AND FEEDBACK SUGGESTION 
+BY PERFORMING THE OPERATION INNER JOIN.
+*******************************************************************************
+
+
+SQL> SELECT S.S_ID,S.S_NAME,F.SUGGESTION FROM STUDENT S INNER JOIN FEEDBACK F 
+ON S.S_ID=F.S_ID;
+
+
+      S_ID S_NAME               SUGGESTION
+---------- -------------------- ------------------------------
+       103 JENY                 EXCELLENT
+       102 RAJU                 BETTER
+       104 MALA                 GOOD
+       101 RAM                  GOOD
+       106 BABU                 EXCELLENT
+
+
+*******************************************************************************
+7) QUERY TO DISPLAY THE DETAILS OF THE STUDENT ID,NAME AND FEEDBACK RATING,
+SUGGESTION BY PERFORMING THE OPERATION INNER JOIN WHEN RATING IS GREATER THAN
+ OR EQUAL TO 3.
+*******************************************************************************
+
+
+SQL> SELECT S.S_ID,S.S_NAME,F.RATING,F.SUGGESTION FROM STUDENT S INNER JOIN 
+FEEDBACK F ON S.S_ID=F.S_ID WHERE F.RATING>=3;
+
+
+      S_ID S_NAME               RATING
+---------- -------------------- --------------------
+SUGGESTION
+------------------------------
+       103 JENY                 4
+EXCELLENT
+
+       104 MALA                 3
+GOOD
+
+       102 RAJU                 4
+BETTER
+
+
+      S_ID S_NAME               RATING
+---------- -------------------- --------------------
+SUGGESTION
+------------------------------
+       106 BABU                 4
+EXCELLENT
+
+
+***************************************************************************
+8) QUERY TO DISPLAY THE DETAILS OF THE STUDENT ID,NAME,COURSE ID,FEEDBACK 
+RATING BY PERFORMING THE OPERATION LEFT OUTER JOIN .
+***************************************************************************
+
+
+SQL> SELECT S.S_ID,S.S_NAME,F.C_ID,F.RATING FROM STUDENT S LEFT OUTER JOIN 
+FEEDBACK F ON S.S_ID=F.S_ID;
+
+
+      S_ID S_NAME                     C_ID RATING
+---------- -------------------- ---------- --------------------
+       103 JENY                        103 4
+       102 RAJU                        101 4
+       104 MALA                        102 3
+       101 RAM                         104 2
+       106 BABU                        101 4
+       105 NANDHINI
+
+6 rows selected.
+
+
+*********************************************************************************
+9) QUERY TO DISPLAY THE DETAILS OF THE STUDENT ID,NAME,COURSE ID,FEEDBACK RATING 
+BY PERFORMING THE OPERATION LEFT OUTER JOIN COURSE MUST BELONGS TO 101 OR 103.
+*********************************************************************************
+
+
+SQL> SELECT S.S_ID,S.S_NAME,F.C_ID,F.RATING FROM STUDENT S LEFT OUTER JOIN 
+FEEDBACK F ON S.S_ID=F.S_ID WHERE F.C_ID IN (101,103);
+
+      S_ID S_NAME                     C_ID RATING
+---------- -------------------- ---------- --------------------
+       103 JENY                        103 4
+       102 RAJU                        101 4
+       106 BABU                        101 4
+
+
+******************************************************************************
+10) QUERY TO DISPLAY THE DETAILS OF THE STUDENT NAME AND THEIR PHONE NUMBER 
+BY PERFORMING THE OPERATION RIGHT OUTER JOIN.
+******************************************************************************
+
+
+SQL> SELECT S.S_NAME,SP.PHONENO FROM STUD_PHNO SP RIGHT OUTER JOIN STUDENT S 
+ON S.S_ID=SP.S_ID;
+
+S_NAME                  PHONENO
+-------------------- ----------
+MALA                 8847282457
+RAM                  9319816438
+JENY                 8987433531
+JENY                 6727164347
+RAJU                 9498262737
+RAJU                 7982710038
+NANDHINI
+BABU
+
+8 rows selected.
+
+
+*******************************************************************************
+11) QUERY TO DISPLAY THE DETAILS OF THE STUDENT NAME NOT BE EITHER RAM OR RAJU 
+AND THEIR PHONE NUMBER BY PERFORMING THE OPERATION RIGHT OUTER JOIN (ON).
+*******************************************************************************
+
+
+SQL> SELECT S.S_NAME,SP.PHONENO FROM STUD_PHNO SP RIGHT OUTER JOIN STUDENT S 
+ON S.S_ID=SP.S_ID AND S.S_NAME NOT IN ('RAM','RAJU');
+
+S_NAME                  PHONENO
+-------------------- ----------
+MALA                 8847282457
+JENY                 8987433531
+JENY                 6727164347
+NANDHINI
+RAM
+RAJU
+BABU
+
+7 rows selected.
+
+
+*****************************************************************************
+12) QUERY TO DISPLAY THE DETAILS OF THE STUDENT NAME NOT EITHER RAM OR RAJU 
+AND THEIR PHONE NUMBER BY PERFORMING THE OPERATION RIGHT OUTER JOIN (WHERE).
+*****************************************************************************
+
+
+SQL> SELECT S.S_NAME,SP.PHONENO FROM STUD_PHNO SP RIGHT OUTER JOIN STUDENT S 
+ON S.S_ID=SP.S_ID WHERE S.S_NAME NOT IN ('RAM','RAJU');
+
+S_NAME                  PHONENO
+-------------------- ----------
+MALA                 8847282457
+JENY                 8987433531
+JENY                 6727164347
+NANDHINI
+BABU
+
+
+*******************************************************************************
+13) QUERY TO DISPLAY THE DETAILS OF THE FACULTY NAME AND THEIR HANDLING COURSE
+ BY PERFORMING THE OPERATION FULL OUTER JOIN.
+*******************************************************************************
+
+
+SQL> SELECT F.FNAME,C.C_NAME FROM FACULTY F FULL OUTER JOIN COURSE C ON 
+F.FID=C.F_ID;
+
+FNAME                C_NAME
+-------------------- ----------------------------------------
+Jenisha              C PROGRAMMING
+Tamilarasan          CIRCUIT ANALYSIS
+Renuka Devi          DATA STRUCTURES
+HEMA                 POWER SYSTEMS
+                     DATA SCIENCE
+Varun
+
+6 rows selected.
+
+
+*******************************************************************************
+14) QUERY TO DISPLAY THE DETAILS OF THE FACULTY NAME AND THEIR HANDLING COURSE 
+THAT MUST NOT BE CIRCUIT ANALYSIS BY PERFORMING THE OPERATION FULL OUTER JOIN.
+*******************************************************************************
+
+
+SQL> SELECT F.FID,F.FNAME,C.C_NAME FROM FACULTY F FULL OUTER JOIN COURSE C ON 
+F.FID=C.F_ID WHERE C.C_NAME<>'CIRCUIT ANALYSIS';
+
+       FID FNAME                C_NAME
+---------- -------------------- ----------------------------------------
+       101 HEMA                 POWER SYSTEMS
+       103 Renuka Devi          DATA STRUCTURES
+       104 Jenisha              C PROGRAMMING
+                                DATA SCIENCE
+
+
+*******************************************************************************
+14) QUERY TO DISPLAY THE DETAILS OF THE FACULTY NAME AND THEIR HANDLING COURSE 
+ALONG WITH DEPARTMENT NAME
+*******************************************************************************
+
+SQL> SELECT C.C_NAME,F.FNAME,D.D_NAME FROM COURSE C CROSS JOIN FACULTY F CROSS JOIN 
+DEPT D WHERE C.F_ID=F.FID AND C.D_DID=D.D_DID;
+
+C_NAME                                   FNAME                D_NAME
+---------------------------------------- -------------------- ----------
+POWER SYSTEMS                            HEMA                 EEE
+CIRCUIT ANALYSIS                         Tamilarasan          ECE
+DATA STRUCTURES                          Renuka Devi          IT
+C PROGRAMMING                            Jenisha              CSE
+
+
+
+----------
+II) SETS
+----------
+
+
+********************************************************************************
+1) QUERY TO DISPLAY THE DETAILS OF THE FEEDBACK WHERE ID BETWEEN THE RANGE 11 
+AND 13 AND SUGGESTION AS GOOD BY PERFORMING UNION OPERATION.
+********************************************************************************
+
+
+SQL> SELECT * FROM FEEDBACK WHERE F_ID BETWEEN 11 AND 13 UNION SELECT * FROM FEEDBACK 
+WHERE SUGGESTION='GOOD';
+
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        11 4                           103        103
+EXCELLENT
+
+        13 4                           102        101
+BETTER
+
+        12 3                           104        102
+GOOD
+
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        14 2                           101        104
+GOOD
+
+
+****************************************************************************
+2) QUERY TO DISPLAY THE DETAILS OF THE FEEDBACK WHERE ID BETWEEN THE RANGE 11 
+AND 13 AND SUGGESTION AS GOOD BY PERFORMING UNION ALL OPERATION.
+****************************************************************************
+
+
+SQL> SELECT * FROM FEEDBACK WHERE F_ID BETWEEN 11 AND 13 UNION all SELECT * 
+FROM FEEDBACK WHERE SUGGESTION='GOOD';
+
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        11 4                           103        103
+EXCELLENT
+
+        13 4                           102        101
+BETTER
+
+        12 3                           104        102
+GOOD
+
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        12 3                           104        102
+GOOD
+
+        14 2                           101        104
+GOOD
+
+
+*******************************************************************************
+3) QUERY TO PERFROM INTERSECT OPERATION ON THE SAME TABLE FEEDBACK WHERE ID IS
+ 12 OR 14 AND STUDENT ID AS 104 OR COURSE ID 104.
+*******************************************************************************
+
+
+SQL> SELECT * FROM FEEDBACK WHERE F_ID IN (12,14) INTERSECT SELECT * FROM 
+FEEDBACK WHERE S_ID=104 OR C_ID=104;
+
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        12 3                           104        102
+GOOD
+
+        14 2                           101        104
+GOOD
+
+
+*********************************************************************************
+4) QUERY TO PERFROM INTERSECT ALL OPERATION ON THE SAME TABLE FEEDBACK WHERE ID 
+IS 12 OR 14 AND STUDENT ID AS 104 OR COURSE ID 104.
+*********************************************************************************
+
+
+SQL> SELECT * FROM FEEDBACK WHERE F_ID IN (12,14) INTERSECT ALL SELECT * FROM 
+FEEDBACK WHERE S_ID=104 OR C_ID=104;
+
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        12 3                           104        102
+GOOD
+
+        14 2                           101        104
+
+
+
+*****************************************************************************
+5) QUERY TO DISPLAY THE DETAILS OF THE STUDENT WHO IS A MALE AND BELONGS TO 
+TAMILNADU USING EXCEPT OPERATION.
+*****************************************************************************
+
+
+SQL> SELECT * FROM STUDENT WHERE STATE='TAMILNADU' EXCEPT SELECT * FROM 
+STUDENT WHERE S_GENDER='F';
+
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+       101 RAM                  ram@gmail.com        M         65
+NORTH STREET         PUTHUR               TUTICORIN
+TAMILNADU            sss15
+
+
+*****************************************************************************
+6) QUERY TO DISPLAY THE DETAILS OF THE STUDENT WHO IS A MALE AND BELONGS TO 
+TAMILNADU USING EXCEPT ALL OPERATION.
+*****************************************************************************
+
+
+SQL> SELECT * FROM STUDENT WHERE STATE='TAMILNADU' EXCEPT ALL SELECT * FROM STUDENT
+ WHERE S_GENDER='F';
+
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+       101 RAM                  ram@gmail.com        M         65
+NORTH STREET         PUTHUR               TUTICORIN
+TAMILNADU            sss15
+
+
+
+*****************************************************************************
+6) QUERY TO DISPLAY THE DETAILS OF ALL THE STUDENT WHO HAD ATTENDS THE COURSE 
+OR WHO GIVE THE FEEDBACK
+*****************************************************************************
+
+
+SQL> SELECT S_ID,C_ID FROM FEEDBACK UNION SELECT S_ID,C_CID FROM ATTENDS;
+
+      S_ID       C_ID
+---------- ----------
+       103        103
+       104        102
+       101        104
+       102        101
+       101        103
+       104        104
+
+6 rows selected.
+
+
+
+*****************************************************************************
+6) QUERY TO DISPLAY THE DETAILS OF ALL THE STUDENT WHO HAD ATTENDS THE COURSE 
+AS WELL AS WHO GIVE THE FEEDBACK
+*****************************************************************************
+
+
+SQL> SELECT S_ID,C_ID FROM FEEDBACK INTERSECT SELECT S_ID,C_CID FROM ATTENDS;
+
+      S_ID       C_ID
+---------- ----------
+       102        101
+       103        103

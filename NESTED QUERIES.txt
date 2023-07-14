@@ -1,0 +1,487 @@
+
+
+
+I) INDEPENDENT QUERIES
+
+
+*****************************************************************************
+1)QUERY TO DISPLAY THE FACULTY DETAILS WHOSE SALARY IS GREATER THAN OR EQUAL 
+TO THE AVERAGE SALARY.
+*****************************************************************************
+
+
+SQL> SELECT * FROM FACULTY WHERE SALARY>=(SELECT AVG(SALARY) FROM FACULTY);
+
+
+       FID FNAME                MAILID
+---------- -------------------- ----------------------------------------
+    SALARY QUALIFICATION                            PASSWORD
+---------- ---------------------------------------- --------
+       101 HEMA                 hema3@gmail.com
+     45000 M.E                                      hema@3
+
+       103 Renuka Devi          renuka@gmail.com
+     40000 M.E                                      renuka@4
+
+       105 Varun                varun7@gmail.com
+     40000 phd                                      varu@7
+
+
+**************************************************************************
+2) QUERY TO DISPLAY THE FACULTY DETAILS WHOSE SALARY IS GREATER THAN THE 
+AVERAGE SALARY AND THEIR QUALIFICATION AS M.E.
+**************************************************************************
+
+
+SQL> SELECT * FROM FACULTY WHERE SALARY>(SELECT AVG(SALARY) FROM FACULTY WHERE
+ QUALIFICATION='M.E');
+
+
+       FID FNAME                MAILID
+---------- -------------------- ----------------------------------------
+    SALARY QUALIFICATION                            PASSWORD
+---------- ---------------------------------------- --------
+       101 HEMA                 hema3@gmail.com
+     45000 M.E                                      hema@3
+
+
+
+******************************************************************************
+3) QUERY TO DISPLAY THE STUDENT BELONGS TO THE DISTINCT STATE WHO HAS ATLEAST
+ 1 PHONE NUMBER.   
+******************************************************************************
+
+
+SQL> SELECT DISTINCT(STATE) FROM STUDENT WHERE S_ID IN (SELECT S_ID FROM 
+STUD_PHNO);
+
+
+STATE
+--------------------
+TAMILNADU
+KARNATAKA
+
+
+*****************************************************************************
+4) QUERY TO DISPLAY THE STUDENT DETAILS WHO GIVE THE FEEDBACK ABOUT ALL THE 
+COURSE EXCEPT 103 AND 104.
+*****************************************************************************
+
+
+SQL> SELECT * FROM STUDENT WHERE S_ID < ALL(SELECT S_ID FROM FEEDBACK WHERE 
+C_ID  NOT IN (103,104));
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+       101 RAM                  ram@gmail.com        M         65
+NORTH STREET         PUTHUR               TUTICORIN
+TAMILNADU            sss15
+
+
+*********************************************************************************
+5) QUERY TO DISPLAY THE DETAILS OF THE STUDENT ID AND NAME IF THERE ANY STUDENTS
+ WHO GIVES FEEDBACK FOR THE COURSE WHICH HAS COURSE ID AS 102 AND 104.
+*********************************************************************************
+
+
+SQL> SELECT S_ID,S_NAME FROM STUDENT WHERE EXISTS(SELECT S_ID FROM FEEDBACK 
+WHERE C_ID IN (102,104));
+
+      S_ID S_NAME
+---------- --------------------
+       103 JENY
+       101 RAM
+       104 MALA
+       102 RAJU
+       105 NANDHINI
+       106 BABU
+
+6 rows selected.
+
+
+*******************************************************************************
+6) QUERY TO DISPLAY THE DETAILS OF THE STUDENT ID AND NAME IF THERE DOESN'T 
+HAVE ANY STUDENTS WHO GIVES FEEDBACK FOR THE COURSE WHICH HAS COURSE ID AS 107 
+AND 108.
+*******************************************************************************
+
+
+SQL> SELECT S_ID,S_NAME FROM STUDENT WHERE NOT EXISTS(SELECT S_ID FROM FEEDBACK 
+WHERE C_ID IN (107,108));
+
+      S_ID S_NAME
+---------- --------------------
+       103 JENY
+       101 RAM
+       104 MALA
+       102 RAJU
+       105 NANDHINI
+       106 BABU
+
+6 rows selected.
+
+
+****************************************************************************
+7) QUERY TO DISPLAY THE DETAILS OF THE STUDENT ID, NAME AND NUMBER OF PHONE 
+NUMBER THEY HAVE.
+****************************************************************************
+
+
+SQL> SELECT S_ID,S_NAME,(SELECT COUNT(*) FROM STUD_PHNO SP WHERE SP.S_ID=S.S_ID)
+ AS PHONE_NOS FROM STUDENT S;
+
+      S_ID S_NAME                PHONE_NOS
+---------- -------------------- ----------
+       103 JENY                          2
+       101 RAM                           1
+       104 MALA                          1
+       102 RAJU                          2
+       105 NANDHINI                      0
+       106 BABU                          0
+
+6 rows selected.
+
+
+*****************************************************************************
+8) QUERY TO CREATE A TABLE WITH THE DETAIL OF FACULTY NAME ALONG WITH THEIR 
+HANDLING COURSE.
+*****************************************************************************
+
+
+SQL> CREATE TABLE DETAIL AS (SELECT F.FNAME,C.C_NAME FROM FACULTY F INNER JOIN
+ COURSE C ON F.FID=C.F_ID);
+
+Table created.
+
+
+
+SQL> DESC DETAIL;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- -------------------------
+ FNAME                                              VARCHAR2(20)
+ C_NAME                                             VARCHAR2(40)
+
+
+
+SQL> SELECT * FROM DETAIL;
+
+FNAME                C_NAME
+-------------------- ----------------------------------------
+HEMA                 POWER SYSTEMS
+Tamilarasan          CIRCUIT ANALYSIS
+Renuka Devi          DATA STRUCTURES
+Jenisha              C PROGRAMMING
+
+
+********************************************************************************
+9) QUERY TO INSERT THE VALUE FACULTY NAME WHOSE NAME STARTS WITH 'V' AND COURSE
+ NAME ENDS WITH 'E' TO THE NEWLY CREATED TABLE 'DETAIL' . 
+********************************************************************************
+
+
+SQL> INSERT INTO DETAIL VALUES((SELECT FNAME FROM FACULTY WHERE FNAME LIKE 'V%')
+,(SELECT C_NAME FROM COURSE WHERE C_NAME LIKE '%E'));
+
+1 row created.
+
+SQL> SELECT * FROM DETAIL;
+
+FNAME                C_NAME
+-------------------- ----------------------------------------
+HEMA                 POWER SYSTEMS
+Tamilarasan          CIRCUIT ANALYSIS
+Renuka Devi          DATA STRUCTURES
+Jenisha              C PROGRAMMING
+Varun                DATA SCIENCE
+
+
+*****************************************************************************
+10) QUERY TO DISPLAY THE STUDENT ID AND THEIR PHONE NUMBER WHO HAS MINIMUM 
+VALUE OF S_ID .
+*****************************************************************************
+
+
+SQL> SELECT S_ID,PHONENO FROM STUD_PHNO WHERE S_ID=(SELECT MIN(S_ID) FROM 
+STUDENT);
+
+      S_ID    PHONENO
+---------- ----------
+       101 9319816438
+       101 7823812547
+
+
+***************************************************************************
+11) QUERY TO DISPLAY THE SUGGESTION DETAILS FOR THE STUDENTS GIVE FEEDBACK 
+MAXIMUM NUMBER OF TIMES BY USING NESTED QUERY.
+***************************************************************************
+
+
+SQL> SELECT SUGGESTION FROM FEEDBACK GROUP BY SUGGESTION HAVING COUNT(S_ID)=
+(SELECT MAX(COUNT(S_ID)) FROM FEEDBACK GROUP BY SUGGESTION);
+
+SUGGESTION
+------------------------------
+EXCELLENT
+GOOD
+
+
+********************************************************************************
+12) QUERY TO DISPLAY THE DETAILS OF THE QUESTION CODE , EXAM DATE AND NUMBER OF
+ TIMES THE QUESTION CODE OCCUR IN THE EXAM.
+********************************************************************************
+
+
+SQL> SELECT QUESCODE,E_DATE,(SELECT COUNT(E_QUES_CODE) FROM EXAM) AS TOTAL_EXAMS
+ FROM WRITES;
+
+  QUESCODE E_DATE    TOTAL_EXAMS
+---------- --------- -----------
+     98674 28-NOV-23           4
+     98896 18-MAY-23           4
+     98674 15-SEP-23           4
+     97685 20-OCT-23           4
+     98761 26-OCT-23           4
+     98761 23-OCT-23           4
+     98896 03-DEC-23           4
+
+7 rows selected.
+
+
+********************************************************************************
+13) QUERY TO DISPLAY THE DETAILS OF THE QUESTION CODE , EXAM DATE AND SET EXAM 
+PLATFORM AS KAGGLE FOR ALL EXAM.
+********************************************************************************
+
+
+SQL> SELECT QUESCODE,E_DATE,'KAGGLE' AS PLATFORM FROM WRITES;
+
+  QUESCODE E_DATE    PLATFO
+---------- --------- ------
+     98674 28-NOV-23 KAGGLE
+     98896 18-MAY-23 KAGGLE
+     98674 15-SEP-23 KAGGLE
+     97685 20-OCT-23 KAGGLE
+     98761 26-OCT-23 KAGGLE
+     98761 23-OCT-23 KAGGLE
+     98896 03-DEC-23 KAGGLE
+
+7 rows selected.
+
+
+******************************************************************************
+14) QUERY TO DISPLAY THE EXAM DATE ALONG WITH THE ID OF THE STUDENT WHO HAD 
+TAKEN THE EXAM.
+******************************************************************************
+
+
+SQL> SELECT * FROM (SELECT S_ID,E_DATE FROM WRITES) STUDENT;
+
+      S_ID E_DATE
+---------- ---------
+       104 28-NOV-23
+       101 18-MAY-23
+       105 15-SEP-23
+       106 20-OCT-23
+       102 26-OCT-23
+       101 23-OCT-23
+       103 03-DEC-23
+
+7 rows selected.
+
+
+*****************************************************************************
+15) QUERY TO DISPLAY THE STUDENT ID ALONG WITH THE TOTAL EXAM HE HAS TAKEN.
+*****************************************************************************
+
+
+SQL> SELECT S_ID,COUNT(QUESCODE) AS TOTALEXAM FROM WRITES GROUP BY S_ID;
+
+      S_ID  TOTALEXAM
+---------- ----------
+       104          1
+       101          2
+       105          1
+       106          1
+       102          1
+       103          1
+
+6 rows selected.
+
+
+*****************************************************************************
+16) QUERY TO DISPLAY THE STUDENT ID WHICH IS LESS THAN OR EQUAL TO 103 ALONG 
+WITH THE TOTAL EXAM HE HAS TAKEN.
+*****************************************************************************
+
+
+SQL> SELECT S_ID,COUNT(QUESCODE) AS TOTALEXAM FROM WRITES GROUP BY S_ID HAVING
+ S_ID<=103;
+
+      S_ID  TOTALEXAM
+---------- ----------
+       101          2
+       102          1
+       103          1
+
+
+******************************************************************************
+17) QUERY TO DISPLAY THE STUDENT ID, NAME AND THEIR DISTRICT WHICH DOES NOT 
+BELONG TO THE STATE HAS DISTRICT NAME ENDS WITH 'I' 
+******************************************************************************
+
+
+SQL> SELECT S_ID, S_NAME, DISTRICT FROM STUDENT WHERE STATE NOT IN (SELECT 
+STATE FROM STUDENT WHERE DISTRICT LIKE '%I');
+
+
+      S_ID S_NAME               DISTRICT
+---------- -------------------- --------------------
+       105 NANDHINI             AGRA
+       102 RAJU                 BANGALORE
+
+
+*****************************************************************************
+18) QUERY TO DISPLAY THE STUDENT DETAILS WHO GIVE THE FEEDBACK ABOUT SOME OF 
+THE COURSE EXCEPT 103 AND 104.
+*****************************************************************************
+
+
+SQL> SELECT * FROM STUDENT WHERE S_ID = SOME(SELECT S_ID FROM FEEDBACK WHERE  C_ID  NOT IN (103,104));
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+       102 RAJU                 aaa@gmail.com        M         34
+EAST STREET          BANGALORE            BANGALORE
+KARNATAKA            abcde1
+
+       104 MALA                 bbb@gmail.com        F         15
+SOUTH STREET         SIVAKASI             VIRUDHUNAGAR
+TAMILNADU            db13
+
+
+
+II) CORRELATED QUERIES
+
+
+*******************************************************************************
+1) QUERY TO DISPLAY THE DETAILS OF THE EXAM TAKEN BY THE STUDENT
+*******************************************************************************
+
+
+SQL> SELECT QUESCODE,E_SESSION,E_DATE FROM WRITES W WHERE S_ID IN (SELECT S_ID 
+FROM STUDENT S WHERE W.S_ID=S.S_ID);
+
+  QUESCODE E_SESSION  E_DATE
+---------- ---------- ---------
+     98674 AN         28-NOV-23
+     98896 FN         18-MAY-23
+     98674 FN         15-SEP-23
+     97685 FN         20-OCT-23
+     98761 AN         26-OCT-23
+     98761 AN         23-OCT-23
+     98896 AN         03-DEC-23
+
+7 rows selected.
+
+
+********************************************************************************
+2) QUERY TO DISPLAY THE FEEDBACK DETAILS GIVEN BY STUDENT WHO HAS ID AS GREATER 
+THAN OR EQUAL TO 103
+********************************************************************************
+
+
+SQL> SELECT * FROM FEEDBACK WHERE EXISTS (SELECT S_ID FROM STUDENT WHERE 
+FEEDBACK.S_ID >= 103);
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        11 4                           103        103
+EXCELLENT
+
+        12 3                           104        102
+GOOD
+
+        15 4                           106        101
+EXCELLENT
+
+
+***********************************************************************************
+3) QUERY TO DISPLAY THE FEEDBACK DETAILS GIVEN BY STUDENT WHO DOESN'T HAVE ID AS 
+GREATER THAN OR EQUAL TO 103
+***********************************************************************************
+
+
+SQL> SELECT * FROM FEEDBACK WHERE NOT EXISTS (SELECT S_ID FROM STUDENT WHERE 
+FEEDBACK.S_ID >= 103);
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        13 4                           102        101
+BETTER
+
+        14 2                           101        104
+GOOD
+
+
+***********************************************************************************
+4) QUERY TO DISPLAY THE FEEDBACK DETAILS GIVEN BY STUDENT WHO DOESN'T HAVE ID AS 
+GREATER THAN OR EQUAL TO 103 AND THEIR SUGGESETION NOT EQUAL TO GOOD
+***********************************************************************************
+
+
+SQL> SELECT * FROM FEEDBACK WHERE S_ID NOT IN (SELECT S_ID FROM STUDENT WHERE FEEDBACK.C_ID >= 103 AND FEEDBACK.SUGGESTION='GOOD');
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        11 4                           103        103
+EXCELLENT
+
+        13 4                           102        101
+BETTER
+
+        12 3                           104        102
+GOOD
+
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        15 4                           106        101
+EXCELLENT
+
+
+***********************************************************************************
+5) QUERY TO DISPLAY THE DETAILS OF THE STUDENT ID, NAME AND NUMBER OF PHONE 
+NUMBER THEY HAVE.
+***********************************************************************************
+
+
+SQL> SELECT S_ID, S_NAME, (SELECT COUNT(*) FROM STUD_PHNO WHERE STUD_PHNO.S_ID = STUDENT.S_ID) AS TOTAL FROM STUDENT;
+
+      S_ID S_NAME                    TOTAL
+---------- -------------------- ----------
+       103 JENY                          2
+       101 RAM                           2
+       104 MALA                          1
+       102 RAJU                          2
+       105 NANDHINI                      0
+       106 BABU                          0
+
+6 rows selected.
+
+
