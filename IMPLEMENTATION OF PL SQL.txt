@@ -1,0 +1,284 @@
+
+
+
+******************************************************************************
+1) QUERY TO INSERT THE STUDENT ID, NAME AND THE DATE OF THE EXAM TAKEN BY THE 
+STUDENT TO THE COMPLETED TABLE
+******************************************************************************
+
+SQL> CREATE OR REPLACE TRIGGER COMSTUD
+  2  AFTER INSERT
+  3  ON WRITES
+  4  FOR EACH ROW
+  5  BEGIN
+  6     INSERT INTO COMPLETED VALUES(:NEW.S_ID,(SELECT S.S_NAME FROM STUDENT S 
+WHERE S.S_ID=:NEW.S_ID),:NEW.E_DATE);
+  7  END;
+  8  /
+
+Trigger created.
+
+
+SQL> INSERT INTO WRITES VALUES(TO_DATE('2013-12-23','YYYY-MM-DD'),'FN',98674,105);
+
+1 row created.
+
+
+SQL> SELECT * FROM WRITES;
+
+E_DATE    E_SESSION    QUESCODE       S_ID
+--------- ---------- ---------- ----------
+28-NOV-23 AN              98674        104
+18-MAY-23 FN              98896        101
+20-OCT-23 FN              97685        106
+26-OCT-23 AN              98761        102
+23-OCT-23 AN              98761        101
+03-DEC-23 AN              98896        103
+23-DEC-13 FN              98674        105
+
+7 rows selected.
+
+
+SQL> SELECT * FROM COMPLETED;
+
+      S_ID S_NAME               E_DATE
+---------- -------------------- ---------
+
+       105 NANDHINI             23-DEC-13
+
+
+
+******************************************************************************
+2) QUERY TO DELETE THE STUDENT PHONE NUMBER ONCE THE STUDENT RECORD IS DELETED
+IN THE STUDENT TABLE
+******************************************************************************
+
+
+SQL> SELECT * FROM STUDENT;
+
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+
+       104 MALA                 bbb@gmail.com        F         15
+SOUTH STREET         SIVAKASI             VIRUDHUNAGAR
+TAMILNADU            db13
+
+       102 RAJU                 aaa@gmail.com        M         34
+EAST STREET          BANGALORE            BANGALORE
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+KARNATAKA            abcde1
+
+       105 NANDHINI             nc@gmail.com         F          7
+ASHOK STREET         MAGATHAM             AGRA
+NEW DELHI            cn100
+
+       107 Priya                priya03@gmail.com    F         90
+West street          Mumbai               Mumbai
+Maharastra           priya123
+
+
+7 rows selected.
+
+
+SQL> SELECT * FROM STUD_PHNO;
+
+   PHONENO       S_ID
+---------- ----------
+8675643535        107
+8847282457        104
+9319816438        101
+9975868675        107
+8987433531        103
+6727164347        103
+9498262737        102
+7982710038        102
+7823812547        101
+
+9 rows selected.
+
+
+SQL> CREATE OR REPLACE TRIGGER REMOVESTUD
+  2  AFTER DELETE
+  3  ON STUDENT
+  4  FOR EACH ROW
+  5  BEGIN
+  6     DELETE FROM STUD_PHNO WHERE S_ID=:OLD.S_ID;
+  7  END;
+  8  /
+
+Trigger created.
+
+
+
+SQL> DELETE FROM STUDENT WHERE STATE='Maharastra';
+
+1 row deleted.
+
+
+
+SQL> SELECT * FROM STUD_PHNO;
+
+   PHONENO       S_ID
+---------- ----------
+8847282457        104
+9319816438        101
+8987433531        103
+6727164347        103
+9498262737        102
+7982710038        102
+7823812547        101
+
+7 rows selected.
+
+
+******************************************************************************
+3) QUERY TO DISPLAY THE CHANGED EXAM DATE WHEN THERE IS ANY UPDATE IN THE 
+EXAM DATES
+******************************************************************************
+
+
+SQL> CREATE OR REPLACE TRIGGER EXAM_CHANGE
+  2  AFTER UPDATE OF E_DATE
+  3  ON WRITES
+  4  FOR EACH ROW
+  5  BEGIN
+  6     DBMS_OUTPUT.PUT_LINE('EXAM DATE CHANGES FROM ' ||:OLD.E_DATE || ' TO ' 
+|| :NEW.E_DATE);
+  7  END;
+  8  /
+
+Trigger created.
+
+
+SQL> SET SERVEROUTPUT ON;
+
+
+SQL> UPDATE WRITES SET E_DATE=TO_DATE('2010-05-27','YYYY-MM-DD') WHERE S_ID=104;
+
+EXAM DATE CHANGES FROM 28-NOV-23 TO 27-MAY-10
+
+1 row updated.
+
+
+
+******************************************************************************
+4) QUERY TO UPDATE THE SUGGESTION GIVEN BY THE STUDENT WHILE THEY UPADTE IT 
+IN THE STUDENTFEEDBACKVIEW TABLE
+******************************************************************************
+
+
+SQL> SELECT * FROM FEEDBACK;
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        11 4                           103        103
+EXCELLENT
+
+        12 3                           104        102
+GOOD
+
+        13 2                           102        101
+BETTER
+
+
+SQL> CREATE OR REPLACE TRIGGER STUD_FEED
+  2  INSTEAD OF UPDATE ON STUDENTFEEDBACKVIEW
+  3  FOR EACH ROW
+  4  BEGIN
+  5     UPDATE FEEDBACK SET SUGGESTION=:NEW.SUGGESTION WHERE S_ID=:OLD.S_ID;
+  6  END;
+  7  /
+
+Trigger created.
+
+
+SQL> SET SERVEROUTPUT ON;
+
+SQL> UPDATE STUDENTFEEDBACKVIEW SET SUGGESTION='EXCELLENT' WHERE S_ID=102;
+
+1 row updated.
+
+SQL> SELECT * FROM FEEDBACK;
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        11 4                           103        103
+EXCELLENT
+
+        12 3                           104        102
+GOOD
+
+        13 2                           102        101
+EXCELLENT
+
+
+
+******************************************************************************
+5) QUERY TO VALIDATE THE STUDENT PHONENUMBER IF IT INVALID MEANS RAISE THE
+ERROR
+******************************************************************************
+
+
+SQL> CREATE OR REPLACE TRIGGER VAL_PHNO
+  2  BEFORE INSERT
+  3  ON STUD_PHNO
+  4  FOR EACH ROW
+  5  BEGIN
+  6     IF LENGTH(:NEW.PHONENO)<>10 THEN
+  7             RAISE_APPLICATION_ERROR(-20004,'** INVALID PHONE NUMBER ! **');
+  8     END IF;
+  9  END;
+ 10  /
+
+Trigger created.
+
+
+SQL> INSERT INTO STUD_PHNO VALUES(867832428757823,102);
+INSERT INTO STUD_PHNO VALUES(867832428757823,102)
+            *
+ERROR at line 1:
+ORA-20004: ** INVALID PHONE NUMBER ! **
+ORA-06512: at "SYSTEM.VAL_PHNO", line 3
+ORA-04088: error during execution of trigger 'SYSTEM.VAL_PHNO'
+
+
+SQL> INSERT INTO STUD_PHNO VALUES(867833,102);
+INSERT INTO STUD_PHNO VALUES(867833,102)
+            *
+ERROR at line 1:
+ORA-20004: ** INVALID PHONE NUMBER ! **
+ORA-06512: at "SYSTEM.VAL_PHNO", line 3
+ORA-04088: error during execution of trigger 'SYSTEM.VAL_PHNO'
+
+
+SQL> INSERT INTO STUD_PHNO VALUES(8679900833,102);
+
+1 row created.
+
+
+
+******************************************************************************
+5) QUERY TO DROP THE CREATED TRIGGERS
+******************************************************************************
+
+
+SQL> DROP TRIGGER STUD_FEED;
+
+Trigger dropped.
+
+

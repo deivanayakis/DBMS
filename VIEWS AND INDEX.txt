@@ -1,0 +1,502 @@
+
+
+----------
+I) VIEWS:
+----------
+
+
+***************************************************************************
+1) CREATE A VIEW STUDENTVIEW WITH ATTRIBUTES S_ID, S_NAME, S_MAILID, STATE 
+FROM TABLE STUDENT
+***************************************************************************
+
+SQL> CREATE VIEW STUDENTVIEW AS SELECT S_ID,S_NAME,S_MAILID,STATE AS NATIVE 
+FROM STUDENT;
+
+View created.
+
+
+SQL> SELECT * FROM STUDENTVIEW;
+
+      S_ID S_NAME               S_MAILID             NATIVE
+---------- -------------------- -------------------- --------------------
+       103 JENY                 ddd@gmail.com        TAMILNADU
+       101 RAM                  ram@gmail.com        TAMILNADU
+       104 MALA                 bbb@gmail.com        TAMILNADU
+       102 RAJU                 aaa@gmail.com        KARNATAKA
+       105 NANDHINI             nc@gmail.com         NEW DELHI
+       106 BABU                 bab@gmail.com        TAMILNADU
+
+6 rows selected.
+
+
+************************************************************************
+2) INSERT NEW VALUES INTO CREATED VIEW TABLE.
+************************************************************************
+
+SQL> INSERT INTO STUDENTVIEW VALUES(107,'SUMEDH','rk@gmail>com','MUMBAI');
+INSERT INTO STUDENTVIEW VALUES(107,'SUMEDH','rk@gmail>com','MUMBAI')
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("SYSTEM"."STUDENT"."S_GENDER")
+
+
+********************************************************************************
+3) UPDATE THE NEW VIEW BY CHANGING STUDENT NATIVE AS MUMBAI WHO HAVE S_ID AS 101 
+********************************************************************************
+
+SQL> UPDATE STUDENTVIEW SET NATIVE='MUMBAI' WHERE S_ID=101;
+
+1 row updated.
+
+SQL> SELECT * FROM STUDENTVIEW;
+
+      S_ID S_NAME               S_MAILID             NATIVE
+---------- -------------------- -------------------- --------------------
+       103 JENY                 ddd@gmail.com        TAMILNADU
+       101 RAM                  ram@gmail.com        MUMBAI
+       104 MALA                 bbb@gmail.com        TAMILNADU
+       102 RAJU                 aaa@gmail.com        KARNATAKA
+       105 NANDHINI             nc@gmail.com         NEW DELHI
+       106 BABU                 bab@gmail.com        TAMILNADU
+
+6 rows selected.
+
+SQL> SELECT * FROM STUDENT;
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+       103 JENY                 ddd@gmail.com        F          7
+WEST STREET          AMBAI                TIRUNELVELI
+TAMILNADU            ddd03
+
+       101 RAM                  ram@gmail.com        M         65
+NORTH STREET         PUTHUR               TUTICORIN
+MUMBAI               sss15
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+
+       104 MALA                 bbb@gmail.com        F         15
+SOUTH STREET         SIVAKASI             VIRUDHUNAGAR
+TAMILNADU            db13
+
+       102 RAJU                 aaa@gmail.com        M         34
+EAST STREET          BANGALORE            BANGALORE
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+KARNATAKA            abcde1
+
+       105 NANDHINI             nc@gmail.com         F          7
+ASHOK STREET         MAGATHAM             AGRA
+NEW DELHI            cn100
+
+       106 BABU                 bab@gmail.com        F          7
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+NEHRU STREET         PALLAVARAM           CHENNAI
+TAMILNADU            boba100
+
+
+6 rows selected.
+
+
+**************************************************************************
+4) DELETE THE DETAILS OF THE STUDENT THROUGH VIEW TABLE WHO HAS NATIVE AS 
+NEW DELHI
+**************************************************************************
+
+SQL> DELETE FROM STUDENTVIEW WHERE NATIVE='NEW DELHI';
+DELETE FROM STUDENTVIEW WHERE NATIVE='NEW DELHI'
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (SYSTEM.WRITES_ID_FK) violated - child record
+found
+
+
+***************************************************************************
+5) CREATE A NEW VIEW WITH STUDENT ID, NAME FROM STUDENT TABLE AND FEEDBACK 
+COURSE ID, RATING AND SUGGESTION FROM FEEDBACK TABLE.
+***************************************************************************
+
+SQL> CREATE VIEW STUDENTFEEDBACKVIEW AS SELECT S.S_ID,S.S_NAME,F.C_ID,F.RATING,
+F.SUGGESTION FROM STUDENT S,FEEDBACK F WHERE S.S_ID=F.S_ID;
+
+View created.
+
+SQL> DESC STUDENTFEEDBACKVIEW
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                      NOT NULL NUMBER(38)
+ S_NAME                                    NOT NULL VARCHAR2(20)
+ C_ID                                               NUMBER(38)
+ RATING                                    NOT NULL VARCHAR2(20)
+ SUGGESTION                                         VARCHAR2(30)
+
+SQL> SELECT * FROM STUDENTFEEDBACKVIEW;
+
+      S_ID S_NAME                     C_ID RATING
+---------- -------------------- ---------- --------------------
+SUGGESTION
+------------------------------
+       103 JENY                        103 4
+EXCELLENT
+
+       102 RAJU                        101 4
+BETTER
+
+       104 MALA                        102 3
+GOOD
+
+
+      S_ID S_NAME                     C_ID RATING
+---------- -------------------- ---------- --------------------
+SUGGESTION
+------------------------------
+       101 RAM                         104 2
+GOOD
+
+       106 BABU                        101 4
+EXCELLENT
+
+
+**********************************************************************
+6) INSERT VALUES INTO THE VIEW CREATED BY TWO TABLE.
+**********************************************************************
+
+SQL> INSERT INTO STUDENTFEEDBACKVIEW VALUES(105,'PRIYA',103,4,'BETTER');
+INSERT INTO STUDENTFEEDBACKVIEW VALUES(105,'PRIYA',103,4,'BETTER')
+*
+ERROR at line 1:
+ORA-01779: cannot modify a column which maps to a non key-preserved table
+
+
+*****************************************************************************
+7) UPDATE THE NEW VIEW TABLE BY MODIFYING RATING AS 2 WHO GIVE THE SUGGESTION 
+AS BETTER
+*****************************************************************************
+
+SQL> UPDATE STUDENTFEEDBACKVIEW SET RATING=2 WHERE SUGGESTION='BETTER';
+
+1 row updated.
+
+SQL> SELECT * FROM STUDENTFEEDBACKVIEW;
+
+      S_ID S_NAME                     C_ID RATING
+---------- -------------------- ---------- --------------------
+SUGGESTION
+------------------------------
+       103 JENY                        103 4
+EXCELLENT
+
+       102 RAJU                        101 2
+BETTER
+
+       104 MALA                        102 3
+GOOD
+
+
+      S_ID S_NAME                     C_ID RATING
+---------- -------------------- ---------- --------------------
+SUGGESTION
+------------------------------
+       101 RAM                         104 2
+GOOD
+
+       106 BABU                        101 4
+EXCELLENT
+
+
+SQL> SELECT * FROM STUDENT;
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+       103 JENY                 ddd@gmail.com        F          7
+WEST STREET          AMBAI                TIRUNELVELI
+TAMILNADU            ddd03
+
+       101 RAM                  ram@gmail.com        M         65
+NORTH STREET         PUTHUR               TUTICORIN
+MUMBAI               sss15
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+
+       104 MALA                 bbb@gmail.com        F         15
+SOUTH STREET         SIVAKASI             VIRUDHUNAGAR
+TAMILNADU            db13
+
+       102 RAJU                 aaa@gmail.com        M         34
+EAST STREET          BANGALORE            BANGALORE
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+KARNATAKA            abcde1
+
+       105 NANDHINI             nc@gmail.com         F          7
+ASHOK STREET         MAGATHAM             AGRA
+NEW DELHI            cn100
+
+       106 BABU                 bab@gmail.com        F          7
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+NEHRU STREET         PALLAVARAM           CHENNAI
+TAMILNADU            boba100
+
+
+6 rows selected.
+
+SQL> SELECT * FROM FEEDBACK;
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        11 4                           103        103
+EXCELLENT
+
+        13 2                           102        101
+BETTER
+
+        12 3                           104        102
+GOOD
+
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        14 2                           101        104
+GOOD
+
+        15 4                           106        101
+EXCELLENT
+
+
+****************************************************************
+8) DELETE THE VALUE FROM THE VIEW TABLE WHO HAVE NAME AS BABU
+****************************************************************
+
+SQL> DELETE FROM STUDENTFEEDBACKVIEW WHERE S_NAME='BABU';
+
+1 row deleted.
+
+
+SQL> SELECT * FROM STUDENTFEEDBACKVIEW;
+
+      S_ID S_NAME                     C_ID RATING
+---------- -------------------- ---------- --------------------
+SUGGESTION
+------------------------------
+       103 JENY                        103 4
+EXCELLENT
+
+       101 RAM                         104 2
+GOOD
+
+       104 MALA                        102 3
+GOOD
+
+
+      S_ID S_NAME                     C_ID RATING
+---------- -------------------- ---------- --------------------
+SUGGESTION
+------------------------------
+       102 RAJU                        101 2
+BETTER
+
+
+SQL> SELECT * FROM FEEDBACK;
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        11 4                           103        103
+EXCELLENT
+
+        12 3                           104        102
+GOOD
+
+        14 2                           101        104
+GOOD
+
+
+      F_ID RATING                     S_ID       C_ID
+---------- -------------------- ---------- ----------
+SUGGESTION
+------------------------------
+        13 2                           102        101
+BETTER
+
+
+SQL> SELECT * FROM STUDENT;
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+       103 JENY                 ddd@gmail.com        F          7
+WEST STREET          AMBAI                TIRUNELVELI
+TAMILNADU            ddd03
+
+       101 RAM                  ram@gmail.com        M         65
+NORTH STREET         PUTHUR               TUTICORIN
+MUMBAI               sss15
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+
+       104 MALA                 bbb@gmail.com        F         15
+SOUTH STREET         SIVAKASI             VIRUDHUNAGAR
+TAMILNADU            db13
+
+       102 RAJU                 aaa@gmail.com        M         34
+EAST STREET          BANGALORE            BANGALORE
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+KARNATAKA            abcde1
+
+       105 NANDHINI             nc@gmail.com         F          7
+ASHOK STREET         MAGATHAM             AGRA
+NEW DELHI            cn100
+
+       106 BABU                 bab@gmail.com        F          7
+
+      S_ID S_NAME               S_MAILID             S     DOORNO
+---------- -------------------- -------------------- - ----------
+STNAME               CITY                 DISTRICT
+-------------------- -------------------- --------------------
+STATE                PASSWORD
+-------------------- --------
+NEHRU STREET         PALLAVARAM           CHENNAI
+TAMILNADU            boba100
+
+
+6 rows selected.
+
+
+*****************************************************************************
+9) CREATE A VIEW TABLE WITH ATTRIBUTE STUDENT NAME, QUESTION CODE, EXAM DATE
+ FROM STUDENT AND EXAM TABLE. 
+*****************************************************************************
+
+SQL> CREATE VIEW STUDENTWRITESVIEW AS SELECT S_NAME,QUESCODE,E_DATE FROM (SELECT
+ * FROM STUDENT INNER JOIN WRITES ON STUDENT.S_ID = WRITES.S_ID AND 
+WRITES.E_SESSION = 'AN' );
+
+View created.
+
+
+SQL> DESC STUDENTWRITESVIEW;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_NAME                                    NOT NULL VARCHAR2(20)
+ QUESCODE                                           NUMBER(38)
+ E_DATE                                             DATE
+
+
+SQL> SELECT * FROM STUDENTWRITESVIEW;
+
+S_NAME                 QUESCODE E_DATE
+-------------------- ---------- ---------
+MALA                      98674 28-NOV-23
+RAJU                      98761 26-OCT-23
+RAM                       98761 23-OCT-23
+JENY                      98896 03-DEC-23
+
+
+-----------
+II) INDEX 
+-----------
+
+
+*******************************************************************
+1) CREATE A NEW INDEX AS studname BY TAKING S_NAME OF THE STUDENT.
+*******************************************************************
+
+SQL> CREATE INDEX studname ON STUDENT(S_NAME);
+
+Index created.
+
+
+***********************************************************
+2) RENAME THE INDEX FROM studname TO studentname
+***********************************************************
+
+SQL> ALTER INDEX studname RENAME TO studentname;
+
+Index altered.
+
+
+***********************************************************
+3) DROP THE CREATED INDEX studentname.
+***********************************************************
+
+SQL> DROP INDEX studentname;
+
+Index dropped.
+
+
+******************************************************************************
+4) CREATE A NEW INDEX AS snamestate BY TAKING S_NAME AND STATE OF THE STUDENT.
+******************************************************************************
+
+SQL> CREATE INDEX snamestate ON STUDENT(S_NAME,STATE);
+
+Index created.
+
+
+***********************************************************
+5) DROP THE CREATED INDEX snamestate.
+***********************************************************
+
+SQL> DROP INDEX snamestate;
+
+Index dropped.
