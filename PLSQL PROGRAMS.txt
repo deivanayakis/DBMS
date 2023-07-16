@@ -1,0 +1,321 @@
+
+
+************
+CURSOR
+************
+
+
+1) IMPLICIT CURSOR
+
+
+******************************************************************************
+1) QUERY TO MODIFY THE NATIVE OF THE STUDENT USING IMPLICIT CURSOR.
+******************************************************************************
+
+SQL> DECLARE
+  2     TOTAL_ROWS NUMBER(2);
+  3  BEGIN
+  4     UPDATE STUDENT SET STATE='CHENNAI' WHERE STATE='TAMILNAD
+U';
+  5     IF SQL%NOTFOUND THEN
+  6             DBMS_OUTPUT.PUT_LINE('NO STUDENT SELECTED');
+  7     ELSIF SQL%FOUND THEN
+  8             TOTAL_ROWS := SQL%ROWCOUNT;
+  9             DBMS_OUTPUT.PUT_LINE(TOTAL_ROWS || ' STUDENTS NATIVE WERE CHANGED');
+ 10     END IF;
+ 11  END;
+ 12  /
+
+3 STUDENTS NATIVE WERE CHANGED
+
+PL/SQL procedure successfully completed.
+
+
+******************************************************************************
+2) QUERY TO DISPLAY THE STUDENT NAME ALONG WITH THEIR NATIVE DETAIL USING
+IMPLICIT CURSOR 
+******************************************************************************
+
+SQL> BEGIN
+  2     FOR STUD_REC IN (SELECT * FROM STUDENT) LOOP
+  3             DBMS_OUTPUT.PUT_LINE(STUD_REC.S_NAME || ' BELONG TO ' || 
+		STUD_REC.STATE);
+  4     END LOOP;
+  5  END;
+  6  /
+
+
+JENY BELONG TO TAMILNADU
+RAM BELONG TO MUMBAI
+MALA BELONG TO TAMILNADU
+RAJU BELONG TO KARNATAKA
+NANDHINI BELONG TO NEW DELHI
+BABU BELONG TO TAMILNADU
+
+PL/SQL procedure successfully completed.
+
+
+******************************************************************************
+3) QUERY TO DISPLAY THE STUDENT NAME ALONG WITH THEIR COURSE TAKEN DETAIL USING
+IMPLICIT CURSOR 
+******************************************************************************
+
+
+SQL> BEGIN
+  2     FOR STUD_REC IN (SELECT S.S_NAME,C.C_NAME FROM STUDENT S , ATTENDS A, COURSE C WHERE (A.S_ID=S.S_ID AND A.C_CID=C.C_CID))  LOOP
+  3                DBMS_OUTPUT.PUT_LINE(STUD_REC.S_NAME || ' - ' || STUD_REC.C_NAME);
+  4     END LOOP;
+  5  END;
+  6  /
+
+RAM - DATA STRUCTURES
+RAJU - C PROGRAMMING
+JENY - DATA STRUCTURES
+MALA - POWER SYSTEMS
+
+PL/SQL procedure successfully completed.
+
+
+
+2) EXPLICIT CURSOR
+
+
+******************************************************************************
+1) QUERY TO DISPLAY THE STUDENT NAME ALONG WITH THEIR MAIL ID USING
+EXPLICIT CURSOR 
+******************************************************************************
+
+
+SQL> SET SERVEROUTPUT ON;
+
+SQL> DECLARE
+  2     S_NAME STUDENT.S_NAME%TYPE;
+  3     S_MAILID STUDENT.S_MAILID%TYPE;
+  4     CURSOR stud_mail IS
+  5             SELECT S_NAME,S_MAILID FROM STUDENT;
+  6  BEGIN
+  7     OPEN stud_mail;
+  8     LOOP
+  9     FETCH stud_mail INTO S_NAME,S_MAILID;
+ 10             EXIT WHEN stud_mail%NOTFOUND;
+ 11             DBMS_OUTPUT.PUT_LINE(S_NAME || ' - ' || S_MAILID);
+ 12     END LOOP;
+ 13     CLOSE stud_mail;
+ 14  END;
+ 15  /
+
+JENY - ddd@gmail.com
+RAM - ram@gmail.com
+MALA - bbb@gmail.com
+RAJU - aaa@gmail.com
+NANDHINI - nc@gmail.com
+BABU - bab@gmail.com
+
+PL/SQL procedure successfully completed.
+
+
+
+***************
+PROCEDURE
+***************
+
+
+******************************************************************************
+1) QUERY TO DISPLAY THE STUDENT NAME AND THE COURSE TAKEN BY THE STUDENT 
+USING PROCEDURE.
+******************************************************************************
+
+SQL> CREATE OR REPLACE PROCEDURE stud_course(SNAME IN VARCHAR2,CNAME IN VARCHAR2)
+  2  IS
+  3  BEGIN
+  4     DBMS_OUTPUT.PUT_LINE(SNAME || ' HAS TAKEN THE ' || CNAME || ' COURSE');
+  5  END;
+  6  /
+
+Procedure created.
+
+CALLING STATEMENT:
+------------------
+
+SQL> EXEC stud_course('DEIVA','FRONT-END DEVELOPMENT');
+DEIVA HAS TAKEN THE FRONT-END DEVELOPMENT COURSE
+
+PL/SQL procedure successfully completed.
+
+SQL> CALL stud_course('DEVI','BACK-END DEVELOPMENT');
+DEVI HAS TAKEN THE BACK-END DEVELOPMENT COURSE
+
+Call completed.
+
+
+******************************************************************************
+2) QUERY TO DISPLAY THE STUDENT ID ALONG WITH THEIR SESSION OF EXAM 
+USING PROCEDURE.
+******************************************************************************
+
+
+SQL> SET SERVEROUTPUT ON;
+SQL> CREATE OR REPLACE PROCEDURE stud_session(SID IN INTEGER,SESSION IN VARCHAR2)
+  2  IS
+  3  BEGIN
+  4     IF SESSION<>'FN' THEN
+  5              DBMS_OUTPUT.PUT_LINE(SID || ' HAS WRITTEN THE EXAM IN AFTERNOON');
+  6     ELSE
+  7          DBMS_OUTPUT.PUT_LINE(SID || ' HAS WRITTEN THE EXAM IN FORENOON');
+  8     END IF;
+  9  END;
+ 10  /
+
+Procedure created.
+
+
+
+SQL> BEGIN
+  2     FOR STUD_REC IN (SELECT * FROM WRITES) LOOP
+  3             STUD_SESSION(STUD_REC.S_ID,STUD_REC.E_SESSION);
+  4     END LOOP;
+  5  END;
+  6  /
+
+104 HAS WRITTEN THE EXAM IN AFTERNOON
+106 HAS WRITTEN THE EXAM IN FORENOON
+102 HAS WRITTEN THE EXAM IN AFTERNOON
+101 HAS WRITTEN THE EXAM IN AFTERNOON
+103 HAS WRITTEN THE EXAM IN AFTERNOON
+105 HAS WRITTEN THE EXAM IN FORENOON
+
+PL/SQL procedure successfully completed.
+
+
+****************
+FUNCTION
+****************
+
+
+******************************************************************************
+1) QUERY TO DISPLAY THE STUDENT EXAM DATE USING FUNCTIONS.
+******************************************************************************
+
+
+SQL> CREATE OR REPLACE FUNCTION sexam_date(SID IN NUMBER)
+  2  RETURN DATE
+  3  IS
+  4      SDATE VARCHAR2(30);
+  5  BEGIN
+  6      SELECT E_DATE INTO SDATE FROM WRITES WHERE S_ID=SID;
+  7      RETURN TO_DATE(SDATE,'YYYY-MM-DD');
+  8  END;
+  9  /
+
+Function created.
+
+
+CALLING STATEMENT:
+------------------
+
+
+SQL> SELECT S_ID, sexam_date(S_ID) FROM WRITES;
+
+      S_ID SEXAM_DAT
+---------- ---------
+       104 10-MAY-27
+       106 23-OCT-20
+       102 23-OCT-26
+       101 23-OCT-23
+       103 23-DEC-03
+       105 13-DEC-23
+
+6 rows selected.
+
+
+
+SQL> SELECT sexam_date(103) FROM DUAL;
+
+SEXAM_DAT
+---------
+23-DEC-03
+
+
+SQL> DECLARE
+  2     X INT:=&X;
+  3     Y DATE;
+  4  BEGIN
+  5       SELECT sexam_date(X) INTO Y FROM DUAL;
+  6       DBMS_OUTPUT.PUT_LINE('EXAM DATE IS ' || Y);
+  7  END;
+  8  /
+Enter value for x: 103
+old   2:        X INT:=&X;
+new   2:        X INT:=103;
+EXAM DATE IS 23-DEC-03
+
+PL/SQL procedure successfully completed.
+
+
+******************************************************************************
+1) QUERY TO DROP THE sexam_date FUNCTION.
+******************************************************************************
+
+
+SQL> DROP FUNCTION sexam_date;
+
+Function dropped.
+
+
+
+
+****************
+EXCEPTION
+****************
+
+
+******************************************************************************
+1) QUERY TO DISPLAY THE STUDENT WHO BELONG TO DELHI OTHERWISE IT WILL THROW
+AN EXCEPTION.
+******************************************************************************
+
+
+SQL> DECLARE
+  2     N VARCHAR(20);
+  3  BEGIN
+  4     SELECT S_NAME INTO N FROM STUDENT WHERE STATE='DELHI';
+  5  EXCEPTION
+  6     WHEN NO_DATA_FOUND THEN
+  7             DBMS_OUTPUT.PUT_LINE('NO STUDENT BELONG TO DELHI');
+  8  END;
+  9  /
+NO STUDENT BELONG TO DELHI
+
+PL/SQL procedure successfully completed.
+
+
+******************************************************************************
+2) QUERY TO VALIDATE THE RATING GIVEN BY THE STUDENT IF IT IS ABOVE OR BELOW
+THE RATING LIMIT MEANS THROW AN USER DEFINED FUNCTION.
+******************************************************************************
+
+
+SQL> DECLARE
+  2     EXP1 EXCEPTION;
+  3     EXP2 EXCEPTION;
+  4  BEGIN
+  5     FOR STUD_REC IN (SELECT * FROM FEEDBACK) LOOP
+  6             IF STUD_REC.RATING<1 THEN
+  7                     RAISE EXP1;
+  8             ELSIF STUD_REC.RATING>5 THEN
+  9                     RAISE EXP2;
+ 10             ELSE
+ 11                     DBMS_OUTPUT.PUT_LINE(STUD_REC.S_ID || ' HAS GIVEN THE VALID RATING AS ' || STUD_REC.RATING);
+ 12             END IF;
+ 13     END LOOP;
+ 14  EXCEPTION
+ 15     WHEN EXP1 THEN
+ 16             DBMS_OUTPUT.PUT_LINE('STUDENT HAS GIVEN THE RAING BELOW THE RATING LIMIT');
+ 17     WHEN EXP2 THEN
+ 18             DBMS_OUTPUT.PUT_LINE('STUDENT HAS GIVEN THE RAING ABOVE THE RATING LIMIT');
+ 19  END;
+ 20  /
+103 HAS GIVEN THE VALID RATING AS 4
+STUDENT HAS GIVEN THE RAING ABOVE THE RATING LIMIT
+
+PL/SQL procedure successfully completed.

@@ -1,0 +1,203 @@
+
+
+
+****************************************************************
+I) CREATE AND DROP AN DATABASE AS onlinecourse
+****************************************************************
+
+>use onlinecoursedb;
+
+mycompiler_mongodb> switched to db onlinecoursedb
+onlinecourse>
+
+>db.dropDatabase();
+
+{ ok: 1, dropped: 'onlinecoursedb' }
+onlinecoursedb> 
+
+
+****************************************************************
+II) CREATE AND DROP AN COLLECTION.
+****************************************************************
+
+>db.createCollection("Student");
+
+{ ok: 1 }
+onlinecoursedb> 
+
+>db.Student.drop();
+
+true
+onlinecoursedb> 
+
+****************************************************************
+III) INSERT THE VALUES INTO THE Student COLLECTION.
+****************************************************************
+
+---------------------
+TO INSERT SINGLE ROW
+---------------------
+
+>db.Student.insert({id:101,name:"Raju",mailid:"raju@gmail.com",mark:96});
+
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("64593778d240d7f8789191ce") }
+}
+onlinecoursedb>
+
+--------------------
+TO INSERT MULTI ROW
+-------------------- 
+>db.Student.insertMany({id:102,name:"Kala",mark:65,native:"chennai"},{id:103,name:"Mano",mailid:"mano@gmail.com",mark:78,native:"madurai"},{id:104,name:"Rama",mark:85,native:"chennai"},{id:105,name:"Dimple",mark:100,native:"tirunelveli"});
+
+
+ {
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("645937f0fa468f4823ced172"),
+    '1': ObjectId("645937f0fa468f4823ced173"),
+    '2': ObjectId("645937f0fa468f4823ced174"),
+    '3': ObjectId("645937f0fa468f4823ced175")
+  }
+}
+onlinecoursedb> 
+
+
+****************************************************************
+IV) DELETE THE VALUES FROM THE Student COLLECTION.
+****************************************************************
+
+-------------------
+TO REMOVE ALL ROWS
+-------------------
+
+> db.Student.remove({});
+
+onlinecoursedb> DeprecationWarning: Collection.remove() is deprecated. Use deleteOne, deleteMany, findOneAndDelete, or bulkWrite.
+{ acknowledged: true, deletedCount: 5 }
+onlinecoursedb> 
+
+-------------------------
+TO REMOVE PARTICULAR ROW
+-------------------------
+
+
+>db.Student.remove({name:"Mano"});
+
+
+onlinecoursedb> DeprecationWarning: Collection.remove() is deprecated. Use deleteOne, deleteMany, findOneAndDelete, or bulkWrite.
+{ acknowledged: true, deletedCount: 1 }
+onlinecoursedb> 
+
+
+>db.Student.remove({id:104,native:"chennai"});
+
+onlinecoursedb> DeprecationWarning: Collection.remove() is deprecated. Use deleteOne, deleteMany, findOneAndDelete, or bulkWrite.
+{ acknowledged: true, deletedCount: 1 }
+onlinecoursedb>
+
+
+****************************************************************
+V) UPDATE THE VALUES IN THE Student COLLECTION.
+****************************************************************
+
+---------------------
+TO UPDATE SINGLE ROW
+---------------------
+
+>db.Student.update({id:102},{$set:{mark:70}});
+
+onlinecoursedb> DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+onlinecoursedb> 
+
+--------------------
+TO UPDATE MULTI ROW
+--------------------
+
+>db.Student.update({native:"chennai"},{$set:{mark:80}},{multi:true});
+
+
+onlinecoursedb> DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
+onlinecoursedb> 
+
+
+****************************************************************
+VI) DISPLAY THE VALUES IN THE Student COLLECTION.
+****************************************************************
+
+------------------------
+TO DISPLAY ALL VALUES
+------------------------
+
+>db.Student.find().pretty();
+
+
+onlinecoursedb> [
+  {
+    _id: ObjectId("64593a58f16fb53dab3abec5"),
+    id: 101,
+    name: 'Raju',
+    mailid: 'raju@gmail.com',
+    mark: 96
+  },
+  {
+    _id: ObjectId("64593a58f16fb53dab3abec6"),
+    id: 102,
+    name: 'Kala',
+    mark: 65,
+    native: 'chennai'
+  },
+  {
+    _id: ObjectId("64593a58f16fb53dab3abec7"),
+    id: 103,
+    name: 'Mano',
+    mailid: 'mano@gmail.com',
+    mark: 78,
+    native: 'madurai'
+  },
+  {
+    _id: ObjectId("64593a58f16fb53dab3abec8"),
+    id: 104,
+    name: 'Rama',
+    mark: 85,
+    native: 'chennai'
+  },
+  {
+    _id: ObjectId("64593a58f16fb53dab3abec9"),
+    id: 105,
+    name: 'Dimple',
+    mark: 100,
+    native: 'tirunelveli'
+  }
+]
+onlinecoursedb> 
+
+--------------------------------------------------------
+TO DISPLAY STUDENT ID AND NAME WHO BELONG TO CHENNAI
+--------------------------------------------------------
+
+>db.Student.find({native:"chennai"},{id:1,mailid:1}).pretty();
+
+
+onlinecoursedb> [
+  { _id: ObjectId("64593aa6ec7fa7337c7e41d7"), id: 102, mark: 65 },
+  { _id: ObjectId("64593aa6ec7fa7337c7e41d9"), id: 104, mark: 85 }
+]
+onlinecoursedb> 
+
+
